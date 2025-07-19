@@ -1,74 +1,15 @@
 import Link from "next/link";
+import { getAllPosts, getCategories } from "@/lib/posts";
 
-// 임시 블로그 데이터 (추후 실제 데이터로 교체)
-const mockPosts = [
-  {
-    id: 1,
-    title: "Next.js 블로그 만들기 프로젝트 시작",
-    excerpt: "GitHub Pages를 활용해서 개인 블로그를 만들어보기로 했다. Next.js와 Tailwind CSS를 사용해서 깔끔하고 모던한 디자인으로 구성할 예정이다.",
-    category: "개발 일지",
-    date: "2024.01.15",
-    readTime: "5분",
-    thumbnail: "/api/placeholder/400/250"
-  },
-  {
-    id: 2,
-    title: "React Hook 사용 패턴 정리",
-    excerpt: "useState, useEffect, useCallback 등 자주 사용하는 Hook들의 올바른 사용법과 주의사항들을 정리해보았다. 특히 의존성 배열 관리가 중요하다.",
-    category: "기술 정리",
-    date: "2024.01.10",
-    readTime: "8분",
-    thumbnail: "/api/placeholder/400/250"
-  },
-  {
-    id: 3,
-    title: "TypeScript 타입 가드 완벽 가이드",
-    excerpt: "런타임에서 타입을 안전하게 체크하는 방법들을 살펴보자. 사용자 정의 타입 가드부터 내장 타입 가드까지 다양한 패턴을 다룬다.",
-    category: "TypeScript",
-    date: "2024.01.05",
-    readTime: "12분",
-    thumbnail: "/api/placeholder/400/250"
-  },
-  {
-    id: 4,
-    title: "CSS Grid vs Flexbox 언제 뭘 써야 할까?",
-    excerpt: "레이아웃을 구성할 때 항상 고민되는 CSS Grid와 Flexbox의 차이점과 각각의 사용 사례를 실제 예제와 함께 정리해보았다.",
-    category: "CSS",
-    date: "2024.01.01",
-    readTime: "10분",
-    thumbnail: "/api/placeholder/400/250"
-  },
-  {
-    id: 5,
-    title: "웹 성능 최적화 체크리스트",
-    excerpt: "실제 프로젝트에서 적용할 수 있는 웹 성능 최적화 기법들을 정리했다. 이미지 최적화부터 코드 스플리팅까지 단계별로 설명한다.",
-    category: "성능 최적화",
-    date: "2023.12.28",
-    readTime: "15분",
-    thumbnail: "/api/placeholder/400/250"
-  },
-  {
-    id: 6,
-    title: "Git 브랜치 전략과 협업 워크플로우",
-    excerpt: "팀 프로젝트에서 효율적인 Git 브랜치 관리 방법과 코드 리뷰 프로세스에 대해 경험을 바탕으로 정리해보았다.",
-    category: "개발 도구",
-    date: "2023.12.20",
-    readTime: "7분",
-    thumbnail: "/api/placeholder/400/250"
-  }
-];
-
-const categories = [
-  { name: "전체", count: 6 },
-  { name: "개발 일지", count: 1 },
-  { name: "기술 정리", count: 1 },
-  { name: "TypeScript", count: 1 },
-  { name: "CSS", count: 1 },
-  { name: "성능 최적화", count: 1 },
-  { name: "개발 도구", count: 1 }
-];
-
-export default function BlogPage() {
+export default async function BlogPage() {
+  const posts = await getAllPosts();
+  const categories = await getCategories();
+  
+  // "전체" 카테고리 추가
+  const allCategories = [
+    { name: "전체", count: posts.length, posts: [] },
+    ...categories
+  ];
   return (
     <div className="min-h-screen bg-neutral-50">
       <div className="container-custom py-8">
@@ -99,7 +40,7 @@ export default function BlogPage() {
               <div className="card p-4">
                 <h3 className="font-semibold text-neutral-900 mb-4">카테고리</h3>
                 <ul className="space-y-2">
-                  {categories.map((category) => (
+                  {allCategories.map((category) => (
                     <li key={category.name}>
                       <button className="flex items-center justify-between w-full px-3 py-2 text-left text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
                         <span>{category.name}</span>
@@ -132,7 +73,7 @@ export default function BlogPage() {
 
             {/* 게시글 목록 */}
             <div className="space-y-6">
-              {mockPosts.map((post) => (
+              {posts.map((post) => (
                 <article key={post.id} className="card p-6 hover:shadow-lg transition-all duration-300">
                   <div className="flex flex-col md:flex-row gap-6">
                     {/* 썸네일 */}
@@ -149,29 +90,43 @@ export default function BlogPage() {
                       {/* 메타 정보 */}
                       <div className="flex items-center space-x-2 text-sm text-neutral-500 mb-2">
                         <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                          {post.category}
+                          {post.frontmatter.category}
                         </span>
                         <span>·</span>
-                        <time>{post.date}</time>
+                        <time>{new Date(post.frontmatter.date).toLocaleDateString('ko-KR')}</time>
                         <span>·</span>
-                        <span>{post.readTime} 읽기</span>
+                        <span>{post.frontmatter.readTime} 읽기</span>
                       </div>
 
                       {/* 제목 */}
                       <h2 className="text-xl font-semibold text-neutral-900 mb-3 hover:text-blue-600 transition-colors duration-200">
-                        <Link href={`/blog/${post.id}`}>
-                          {post.title}
+                        <Link href={`/blog/${encodeURIComponent(post.slug)}`}>
+                          {post.frontmatter.title}
                         </Link>
                       </h2>
 
                       {/* 요약 */}
                       <p className="text-neutral-600 line-clamp-3 mb-4">
-                        {post.excerpt}
+                        {post.frontmatter.excerpt}
                       </p>
+
+                      {/* 태그 */}
+                      {post.frontmatter.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-4">
+                          {post.frontmatter.tags.slice(0, 3).map((tag) => (
+                            <span 
+                              key={tag}
+                              className="px-2 py-1 bg-neutral-100 text-neutral-600 text-xs rounded-full"
+                            >
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
 
                       {/* 더 읽기 */}
                       <Link 
-                        href={`/blog/${post.id}`}
+                        href={`/blog/${encodeURIComponent(post.slug)}`}
                         className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
                       >
                         더 읽기

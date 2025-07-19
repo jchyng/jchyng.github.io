@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="font-sans antialiased min-h-screen bg-neutral-50">
+      <body className="font-sans antialiased min-h-screen bg-neutral-50" suppressHydrationWarning={true}>
         <Header />
         <main className="flex-1">
           {children}
