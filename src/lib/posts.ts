@@ -72,7 +72,8 @@ export async function parsePost(filePath: string): Promise<Post | null> {
         date: frontmatter.date,
         category: frontmatter.category,
         excerpt: frontmatter.excerpt || '',
-        tags: frontmatter.tags || []
+        tags: frontmatter.tags || [],
+        thumbnail: frontmatter.thumbnail
       },
       content: htmlContent,
       filePath
@@ -201,4 +202,10 @@ export async function getRelatedPosts(currentPost: Post, limit: number = 3): Pro
     .slice(0, limit);
   
   return relatedPosts;
+}
+
+// 최근 게시글 가져오기 (홈페이지용)
+export async function getRecentPosts(limit: number = 2): Promise<Post[]> {
+  const posts = await getAllPosts();
+  return posts.slice(0, limit);
 }

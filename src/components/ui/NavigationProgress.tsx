@@ -16,14 +16,15 @@ export default function NavigationProgress() {
     const originalPush = router.push;
     router.push = (...args: Parameters<typeof router.push>) => {
       handleStart();
-      const result = originalPush.apply(router, args);
-      // Promise 완료 후 로딩 상태 해제
-      if (result instanceof Promise) {
-        result.finally(handleComplete);
-      } else {
+      try {
+        const result = originalPush.apply(router, args);
+        // 비동기 작업 완료 후 로딩 상태 해제
+        setTimeout(handleComplete, 100);
+        return result;
+      } catch (error) {
         handleComplete();
+        throw error;
       }
-      return result;
     };
 
     return () => {

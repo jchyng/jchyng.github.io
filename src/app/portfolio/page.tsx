@@ -1,14 +1,14 @@
 'use client';
 
-import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 // 프로필 데이터
 const profileData = {
-  name: "김개발",
-  birthDate: "1995.03.15",
+  name: "정찬영",
+  birthDate: "1999.11.23",
   major: "컴퓨터공학 전공",
-  image: "/api/placeholder/200/200",
+  image: "/profile.jpg",
   experience: [
     {
       company: "SPPARTNERS",
@@ -88,7 +88,7 @@ const projects = [
     link: "https://github.com/username/ecommerce",
     tech: ["React", "Node.js", "MongoDB", "Express"],
     team: "개인 프로젝트",
-    image: "/api/placeholder/400/250",
+    image: "/images/portfolio/ecommerce-website.jpg",
     type: "personal"
   },
   {
@@ -99,7 +99,7 @@ const projects = [
     link: "https://github.com/username/todo-app",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "Prisma"],
     team: "개인 프로젝트",
-    image: "/api/placeholder/400/250",
+    image: "/images/portfolio/todo-app.jpg",
     type: "personal"
   },
   {
@@ -110,7 +110,7 @@ const projects = [
     link: "#",
     tech: ["React", "Spring Boot", "MySQL", "Docker"],
     team: "팀 프로젝트 (3명)",
-    image: "/api/placeholder/400/250",
+    image: "/images/portfolio/management-system.jpg",
     type: "work"
   },
   {
@@ -121,7 +121,7 @@ const projects = [
     link: "https://github.com/username/weather-dashboard",
     tech: ["Vue.js", "Chart.js", "OpenWeather API"],
     team: "개인 프로젝트",
-    image: "/api/placeholder/400/250",
+    image: "/images/portfolio/weather-dashboard.jpg",
     type: "personal"
   }
 ];
@@ -245,10 +245,10 @@ export default function PortfolioPage() {
           </aside>
 
           {/* 메인 콘텐츠 */}
-          <main className="flex-1">
+          <main className="flex-1 pt-8">
             {/* 헤더 */}
             <section className="mb-12">
-              <h1 className="text-4xl font-bold text-neutral-900 mb-4">포트폴리오</h1>
+              <h1 className="text-4xl font-bold text-neutral-900 mb-4">소개</h1>
               <p className="text-xl text-neutral-600 leading-relaxed">
                 웹 개발에 대한 열정과 지속적인 학습을 통해 성장하는 개발자입니다.<br/>
                 사용자 경험을 중시하며, 깔끔하고 효율적인 코드를 작성하기 위해 노력합니다.
@@ -297,7 +297,19 @@ export default function PortfolioPage() {
               <div className="grid gap-8 md:grid-cols-2">
                 {filteredProjects.map((project) => (
                   <div key={project.id} className="card overflow-hidden hover:shadow-lg transition-all duration-300">
-                    <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                    <div className="aspect-video overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                      {project.image ? (
+                        <Image 
+                          src={project.image} 
+                          alt={project.title}
+                          width={400}
+                          height={250}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      ) : null}
                       <svg className="w-16 h-16 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>

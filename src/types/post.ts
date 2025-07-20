@@ -4,6 +4,7 @@ export interface PostFrontmatter {
   category: string;
   excerpt: string;
   tags: string[];
+  thumbnail?: string;
 }
 
 export interface Post {

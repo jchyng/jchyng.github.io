@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useMemo } from "react";
 import { Post, Category } from "@/types/post";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -103,26 +104,6 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
           {/* 사이드바 */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <div className="sticky top-24">
-              {/* 검색 */}
-              <div className="card p-4 mb-6">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="게시글 검색..."
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    className="w-full pl-10 pr-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                  <svg 
-                    className="absolute left-3 top-2.5 w-5 h-5 text-neutral-400" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-              </div>
 
               {/* 카테고리 */}
               <div className="card p-4">
@@ -149,11 +130,30 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
           </aside>
 
           {/* 메인 콘텐츠 */}
-          <main className="flex-1">
+          <main className="flex-1 pt-8">
             {/* 헤더 */}
-            <div className="mb-8">
+            {/* <div className="mb-8">
               <h1 className="text-3xl font-bold text-neutral-900 mb-2">개발 블로그</h1>
               <p className="text-neutral-600">개발하면서 배운 것들과 경험을 기록합니다</p>
+            </div> */}
+
+            {/* 검색 */}
+            <div className="relative mb-8">
+              <input
+                type="text"
+                placeholder="게시글 검색..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="w-full pl-10 pr-4 py-3 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white shadow-sm"
+              />
+              <svg 
+                className="absolute left-3 top-3.5 w-5 h-5 text-neutral-400" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
             </div>
 
             {/* 모바일 필터 버튼 */}
@@ -182,7 +182,7 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                     <>
                       <span>검색:</span>
                       <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
-                        "{searchTerm}"
+                        &quot;{searchTerm}&quot;
                       </span>
                     </>
                   )}
@@ -205,10 +205,23 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                   <div className="flex flex-col md:flex-row gap-6">
                     {/* 썸네일 */}
                     <div className="md:w-48 md:flex-shrink-0 md:self-stretch">
-                      <div className="h-full bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-12 h-12 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
+                      <div className="h-full rounded-lg overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                        {post.frontmatter.thumbnail ? (
+                          <Image
+                            src={post.frontmatter.thumbnail}
+                            alt={post.frontmatter.title}
+                            width={192}
+                            height={128}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <svg className="w-12 h-12 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        )}
                       </div>
                     </div>
 
