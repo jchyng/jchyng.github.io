@@ -33,6 +33,7 @@ date: "2025-07-15"
 category: "카테고리명"
 excerpt: "게시글 요약 (블로그 목록에 표시될 내용)"
 tags: ["태그1", "태그2", "태그3"]
+thumbnail: "/images/post-thumbnail.png"
 ---
 
 # 실제 게시글 내용
@@ -46,6 +47,7 @@ tags: ["태그1", "태그2", "태그3"]
 - `category`: 카테고리명 (필수)
 - `excerpt`: 게시글 요약 (필수)
 - `tags`: 태그 배열 (선택)
+- `thumbnail`: 썸네일 이미지 경로 (선택)
 
 ## 5. 작성 예시
 
@@ -56,6 +58,7 @@ date: "2025-07-15"
 category: "기술정리"
 excerpt: "React Hook의 올바른 사용법과 주의사항을 정리했습니다. useState, useEffect, useCallback 등을 다룹니다."
 tags: ["React", "Hook", "Frontend"]
+thumbnail: "/images/react-hooks-guide.png"
 ---
 
 # React Hook 완벽 가이드
