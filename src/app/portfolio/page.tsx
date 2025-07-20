@@ -1,6 +1,7 @@
 'use client';
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 // 프로필 데이터
@@ -189,11 +190,11 @@ export default function PortfolioPage() {
                 <div className="mb-6">
                   <h3 className="font-semibold text-neutral-900 mb-3">주요 기술</h3>
                   <div className="flex flex-wrap gap-2">
-                    <img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React" className="h-5" />
-                    <img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white" alt="Next.js" className="h-5" />
-                    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" className="h-5" />
-                    <img src="https://img.shields.io/badge/Node.js-43853D?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" className="h-5" />
-                    <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" className="h-5" />
+                    <Image src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React" width={100} height={20} className="h-5" unoptimized />
+                    <Image src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white" alt="Next.js" width={100} height={20} className="h-5" unoptimized />
+                    <Image src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" width={100} height={20} className="h-5" unoptimized />
+                    <Image src="https://img.shields.io/badge/Node.js-43853D?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" width={100} height={20} className="h-5" unoptimized />
+                    <Image src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" width={100} height={20} className="h-5" unoptimized />
                   </div>
                 </div>
 
@@ -230,15 +231,15 @@ export default function PortfolioPage() {
               {/* 네비게이션 */}
               <div className="card p-4">
                 <nav className="space-y-2">
-                  <a href="#projects" className="block py-2 px-3 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
+                  <Link href="#projects" className="block py-2 px-3 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
                     프로젝트
-                  </a>
-                  <a href="#achievements" className="block py-2 px-3 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
+                  </Link>
+                  <Link href="#achievements" className="block py-2 px-3 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
                     자격증 & 교육
-                  </a>
-                  <a href="#skills" className="block py-2 px-3 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
+                  </Link>
+                  <Link href="#skills" className="block py-2 px-3 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
                     기술 스택
-                  </a>
+                  </Link>
                 </nav>
               </div>
             </div>
@@ -421,10 +422,13 @@ export default function PortfolioPage() {
                     <div className="flex flex-wrap gap-3">
                       {category.skills.map((skill) => (
                         <div key={skill.name} className="transition-transform duration-200 hover:scale-105">
-                          <img 
+                          <Image 
                             src={skill.badge} 
                             alt={skill.name}
+                            width={120}
+                            height={32}
                             className="h-8 shadow-sm hover:shadow-md transition-shadow duration-200"
+                            unoptimized
                           />
                         </div>
                       ))}
