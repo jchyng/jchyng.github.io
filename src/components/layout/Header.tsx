@@ -48,7 +48,7 @@ const Header = () => {
                     alt="Dev.Blog Logo" 
                     width={32} 
                     height={32}
-                    className="w-full h-full object-cover"
+                    className="w-8 h-8 object-cover"
                   />
                 <span className="text-xl font-bold bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-transparent">
                   Dev.Blog
