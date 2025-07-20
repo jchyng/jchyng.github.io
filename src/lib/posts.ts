@@ -28,6 +28,11 @@ function getAllMarkdownFiles(dir: string = postsDirectory): string[] {
   const files: string[] = [];
   
   try {
+    // 디렉토리가 존재하지 않으면 빈 배열 반환
+    if (!fs.existsSync(dir)) {
+      return files;
+    }
+    
     const items = fs.readdirSync(dir);
     
     for (const item of items) {

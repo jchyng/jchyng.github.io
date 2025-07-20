@@ -100,9 +100,14 @@ export default async function BlogPostPage({ params }: PageProps) {
 
 // 정적 경로 생성
 export async function generateStaticParams() {
-  const posts = await getAllPosts();
-  
-  return posts.map((post) => ({
-    id: encodeURIComponent(post.slug),
-  }));
+  try {
+    const posts = await getAllPosts();
+    
+    return posts.map((post) => ({
+      id: encodeURIComponent(post.slug),
+    }));
+  } catch {
+    console.warn('No posts found, returning empty array for static generation');
+    return [];
+  }
 }
