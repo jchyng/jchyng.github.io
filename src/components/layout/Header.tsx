@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
@@ -10,8 +11,8 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigation = [
-    { name: '포트폴리오', href: '/portfolio', description: 'My Projects & Experience' },
-    { name: '개발 블로그', href: '/blog', description: 'Tech Articles & Insights' },
+    { name: '포트폴리오', href: '/portfolio', description: '경력 및 프로젝트' },
+    { name: '개발 블로그', href: '/blog', description: '기술 블로그 및 인사이트' },
   ];
 
   useEffect(() => {
@@ -42,9 +43,13 @@ const Header = () => {
                 href="/" 
                 className="group flex items-center space-x-2 transition-all duration-200"
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-200 group-hover:scale-105">
-                  <span className="text-white font-bold text-sm">D</span>
-                </div>
+                <Image 
+                    src="/logo.png" 
+                    alt="Dev.Blog Logo" 
+                    width={32} 
+                    height={32}
+                    className="w-full h-full object-cover"
+                  />
                 <span className="text-xl font-bold bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-transparent">
                   Dev.Blog
                 </span>
@@ -68,11 +73,6 @@ const Header = () => {
                     `}
                   >
                     <span className="relative z-10 font-medium">{item.name}</span>
-                    
-                    {/* Active indicator */}
-                    {isActive && (
-                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-600 rounded-full" />
-                    )}
                     
                     {/* Hover tooltip */}
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-1 bg-neutral-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">

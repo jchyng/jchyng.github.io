@@ -11,13 +11,13 @@ export default function Home() {
               <h1 className="text-4xl sm:text-5xl font-bold text-neutral-900 mb-6">
                 안녕하세요, 개발자 
                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  김개발
+                  정찬영
                 </span>
                 입니다
               </h1>
               <p className="text-xl text-neutral-600 mb-8 leading-relaxed">
-                웹 개발을 통해 배운 것들과 경험을 기록하고 공유하는 공간입니다.<br/>
-                주로 프론트엔드와 백엔드 개발, 그리고 개발 과정에서 만난 문제들의 해결 과정을 다룹니다.
+                개발을 통해 배운 것들과 경험을 기록하고 공유하는 공간입니다.<br/>
+                주로 웹 개발 과정에서 만난 문제들의 해결 과정을 다룹니다.
               </p>
             </div>
 
@@ -70,33 +70,6 @@ export default function Home() {
             {/* Navigation Cards */}
             <div className="grid md:grid-cols-2 gap-8">
               <Link 
-                href="/blog" 
-                className="group card p-8 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors duration-300">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-neutral-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
-                      개발 블로그
-                    </h3>
-                    <p className="text-neutral-600">
-                      개발하면서 배운 것들, 문제 해결 과정, 새로운 기술 학습 기록
-                    </p>
-                    <div className="flex items-center mt-4 text-blue-600 group-hover:translate-x-1 transition-transform duration-300">
-                      <span className="text-sm font-medium">게시글 보기</span>
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-
-              <Link 
                 href="/portfolio" 
                 className="group card p-8 hover:shadow-lg transition-all duration-300"
               >
@@ -115,6 +88,33 @@ export default function Home() {
                     </p>
                     <div className="flex items-center mt-4 text-purple-600 group-hover:translate-x-1 transition-transform duration-300">
                       <span className="text-sm font-medium">자세히 보기</span>
+                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+
+              <Link 
+                href="/blog" 
+                className="group card p-8 hover:shadow-lg transition-all duration-300"
+              >
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors duration-300">
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-neutral-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                      개발 블로그
+                    </h3>
+                    <p className="text-neutral-600">
+                      개발하면서 배운 것들, 문제 해결 과정, 새로운 기술 학습 기록
+                    </p>
+                    <div className="flex items-center mt-4 text-blue-600 group-hover:translate-x-1 transition-transform duration-300">
+                      <span className="text-sm font-medium">게시글 보기</span>
                       <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>

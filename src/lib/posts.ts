@@ -131,16 +131,34 @@ export async function getPostsByCategoryName(categoryName: string): Promise<Post
   return posts.filter(post => post.frontmatter.category === categoryName);
 }
 
-// ID로 특정 게시글 가져오기
+// ID로 특정 게시글 가져오기 (최적화된 버전)
 export async function getPostById(id: string): Promise<Post | null> {
-  const posts = await getAllPosts();
-  return posts.find(post => post.id === id) || null;
+  const markdownFiles = getAllMarkdownFiles();
+  
+  // ID와 매칭되는 파일 찾기
+  for (const filePath of markdownFiles) {
+    const fileId = generatePostId(filePath);
+    if (fileId === id) {
+      return await parsePost(filePath);
+    }
+  }
+  
+  return null;
 }
 
-// 슬러그로 특정 게시글 가져오기
+// 슬러그로 특정 게시글 가져오기 (최적화된 버전)
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const posts = await getAllPosts();
-  return posts.find(post => post.slug === slug) || null;
+  const markdownFiles = getAllMarkdownFiles();
+  
+  // 슬러그와 매칭되는 파일 찾기
+  for (const filePath of markdownFiles) {
+    const fileSlug = generateSlug(filePath);
+    if (fileSlug === slug) {
+      return await parsePost(filePath);
+    }
+  }
+  
+  return null;
 }
 
 // 블로그 메타데이터 가져오기
