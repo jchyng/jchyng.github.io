@@ -11,16 +11,68 @@ interface BlogContentProps {
 
 export default function BlogContent({ posts, categories }: BlogContentProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const postsPerPage = 5;
 
   const filteredPosts = useMemo(() => {
-    if (selectedCategory === "전체") {
-      return posts;
+    let result = selectedCategory === "전체" ? posts : 
+      posts.filter(post => post.frontmatter.category === selectedCategory);
+    
+    if (searchTerm) {
+      result = result.filter(post => 
+        post.frontmatter.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.frontmatter.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
     }
-    return posts.filter(post => post.frontmatter.category === selectedCategory);
-  }, [selectedCategory, posts]);
+    
+    return result;
+  }, [selectedCategory, posts, searchTerm]);
+
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const paginatedPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory(categoryName);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const getPageNumbers = () => {
+    const delta = 2;
+    const range = [];
+    const rangeWithDots = [];
+
+    for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
+      range.push(i);
+    }
+
+    if (currentPage - delta > 2) {
+      rangeWithDots.push(1, '...');
+    } else {
+      rangeWithDots.push(1);
+    }
+
+    rangeWithDots.push(...range);
+
+    if (currentPage + delta < totalPages - 1) {
+      rangeWithDots.push('...', totalPages);
+    } else {
+      if (totalPages > 1) {
+        rangeWithDots.push(totalPages);
+      }
+    }
+
+    return rangeWithDots.filter((item, index, arr) => arr.indexOf(item) === index);
   };
 
   const allCategories = [
@@ -41,6 +93,8 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                   <input
                     type="text"
                     placeholder="게시글 검색..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                     className="w-full pl-10 pr-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                   <svg 
@@ -96,14 +150,26 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
               </button>
             </div>
 
-            {/* 선택된 카테고리 표시 */}
-            {selectedCategory !== "전체" && (
+            {/* 선택된 카테고리 및 검색 결과 표시 */}
+            {(selectedCategory !== "전체" || searchTerm) && (
               <div className="mb-6">
-                <div className="flex items-center space-x-2 text-sm text-neutral-600">
-                  <span>카테고리:</span>
-                  <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
-                    {selectedCategory}
-                  </span>
+                <div className="flex items-center flex-wrap gap-2 text-sm text-neutral-600">
+                  {selectedCategory !== "전체" && (
+                    <>
+                      <span>카테고리:</span>
+                      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
+                        {selectedCategory}
+                      </span>
+                    </>
+                  )}
+                  {searchTerm && (
+                    <>
+                      <span>검색:</span>
+                      <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
+                        "{searchTerm}"
+                      </span>
+                    </>
+                  )}
                   <span>({filteredPosts.length}개 게시글)</span>
                 </div>
               </div>
@@ -113,10 +179,12 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
             <div className="space-y-6">
               {filteredPosts.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="text-neutral-500">해당 카테고리에 게시글이 없습니다.</div>
+                  <div className="text-neutral-500">
+                    {searchTerm ? "검색 결과가 없습니다." : "해당 카테고리에 게시글이 없습니다."}
+                  </div>
                 </div>
               ) : (
-                filteredPosts.map((post) => (
+                paginatedPosts.map((post) => (
                 <article key={post.id} className="card p-6 hover:shadow-lg transition-all duration-300">
                   <div className="flex flex-col md:flex-row gap-6">
                     {/* 썸네일 */}
@@ -183,23 +251,78 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
             </div>
 
             {/* 페이지네이션 */}
-            <div className="flex justify-center mt-12">
-              <nav className="flex items-center space-x-2">
-                <button className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">1</button>
-                <button className="px-4 py-2 text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors duration-200">2</button>
-                <button className="px-4 py-2 text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors duration-200">3</button>
-                <button className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </nav>
-            </div>
+            {totalPages > 1 && (
+              <div className="flex justify-center mt-12">
+                <nav className="flex items-center space-x-2">
+                  {/* 맨 앞으로 */}
+                  <button 
+                    onClick={() => handlePageChange(1)}
+                    disabled={currentPage === 1}
+                    className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="첫 페이지"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  
+                  {/* 이전 페이지 */}
+                  <button 
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="이전 페이지"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+
+                  {/* 페이지 번호들 */}
+                  {getPageNumbers().map((pageNum, index) => (
+                    pageNum === '...' ? (
+                      <span key={`dots-${index}`} className="px-2 py-2 text-neutral-400">...</span>
+                    ) : (
+                      <button
+                        key={pageNum}
+                        onClick={() => handlePageChange(Number(pageNum))}
+                        className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
+                          currentPage === pageNum
+                            ? 'bg-blue-600 text-white'
+                            : 'text-neutral-700 hover:bg-neutral-100'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    )
+                  ))}
+
+                  {/* 다음 페이지 */}
+                  <button 
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="다음 페이지"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+
+                  {/* 맨 뒤로 */}
+                  <button 
+                    onClick={() => handlePageChange(totalPages)}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="마지막 페이지"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </nav>
+              </div>
+            )}
           </main>
         </div>
       </div>
