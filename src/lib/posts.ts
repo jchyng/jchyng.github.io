@@ -23,7 +23,7 @@ function generateSlug(filePath: string): string {
   return id.toLowerCase().replace(/\s+/g, '-');
 }
 
-// 모든 마크다운 파일 경로 가져오기
+// 모든 마크다운 파일 경로 가져오기 (삭제된 파일 제외)
 function getAllMarkdownFiles(dir: string = postsDirectory): string[] {
   const files: string[] = [];
   
@@ -37,7 +37,10 @@ function getAllMarkdownFiles(dir: string = postsDirectory): string[] {
       if (stat.isDirectory()) {
         files.push(...getAllMarkdownFiles(fullPath));
       } else if (item.endsWith('.md')) {
-        files.push(fullPath);
+        // 파일명에 (삭제)가 포함된 파일은 제외
+        if (!item.includes('(삭제)')) {
+          files.push(fullPath);
+        }
       }
     }
   } catch (error) {
@@ -137,6 +140,10 @@ export async function getPostById(id: string): Promise<Post | null> {
   
   // ID와 매칭되는 파일 찾기
   for (const filePath of markdownFiles) {
+    const fileName = path.basename(filePath);
+    // 삭제된 파일은 제외
+    if (fileName.includes('(삭제)')) continue;
+    
     const fileId = generatePostId(filePath);
     if (fileId === id) {
       return await parsePost(filePath);
@@ -152,6 +159,10 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   
   // 슬러그와 매칭되는 파일 찾기
   for (const filePath of markdownFiles) {
+    const fileName = path.basename(filePath);
+    // 삭제된 파일은 제외
+    if (fileName.includes('(삭제)')) continue;
+    
     const fileSlug = generateSlug(filePath);
     if (fileSlug === slug) {
       return await parsePost(filePath);
