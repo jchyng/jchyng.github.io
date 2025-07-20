@@ -1,14 +1,17 @@
 import { remark } from 'remark';
-import remarkHtml from 'remark-html';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import rehypePrism from '@mapbox/rehype-prism';
 import matter from 'gray-matter';
 
-const processor = remark().use(remarkHtml);
-
-export async function markdownToHtml(markdown: string): Promise<string> {
-  const result = await processor.process(markdown);
-  return result.toString();
+export default async function markdownToHtml(markdown: string) {
+  const result = await remark()
+    .use(remarkRehype)
+    .use(rehypePrism)
+    .use(rehypeStringify)
+    .process(markdown)
+  return result.toString()
 }
-
 export function parseFrontmatter(fileContent: string) {
   const { data, content } = matter(fileContent);
   return {

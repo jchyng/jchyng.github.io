@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { Post, Category, PostsByCategory, PostMetadata } from '@/types/post';
-import { parseFrontmatter, markdownToHtml } from './markdown';
+import { parseFrontmatter } from './markdown';
+import markdownToHtml from './markdown';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
 
