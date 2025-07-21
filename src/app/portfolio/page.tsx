@@ -3,146 +3,83 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import portfolioData from "./data.json";
 
-// 프로필 데이터
-const profileData = {
-  name: "정찬영",
-  birthDate: "1999.11.23",
-  major: "컴퓨터공학 전공",
-  image: "/profile.jpg",
-  experience: [
-    {
-      company: "SPPARTNERS",
-      position: "인턴",
-      period: "2023.09 ~ 2024.12",
-      type: "인턴십"
-    },
-    {
-      company: "위니텍",
-      position: "WEB 개발",
-      period: "2024.04 ~ 2025.03",
-      type: "개발자"
-    }
-  ],
-  links: {
-    github: "https://github.com/username",
-    tistory: "https://username.tistory.com"
-  }
-};
+interface SocialLink {
+  name: string;
+  url: string;
+  svg: string;
+  viewBox?: string;
+}
 
-// 기술 스택 데이터 (shields.io 뱃지)
-const techStacks = [
-  {
-    category: "Frontend",
-    skills: [
-      { name: "React", badge: "https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" },
-      { name: "Next.js", badge: "https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" },
-      { name: "TypeScript", badge: "https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" },
-      { name: "JavaScript", badge: "https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" },
-      { name: "HTML5", badge: "https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" },
-      { name: "CSS3", badge: "https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" },
-      { name: "Tailwind CSS", badge: "https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" },
-      { name: "Sass", badge: "https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white" }
-    ]
-  },
-  {
-    category: "Backend",
-    skills: [
-      { name: "Node.js", badge: "https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" },
-      { name: "Express.js", badge: "https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&logo=express&logoColor=white" },
-      { name: "Python", badge: "https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" },
-      { name: "Java", badge: "https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" },
-      { name: "Spring Boot", badge: "https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" }
-    ]
-  },
-  {
-    category: "Database",
-    skills: [
-      { name: "MySQL", badge: "https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white" },
-      { name: "PostgreSQL", badge: "https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" },
-      { name: "MongoDB", badge: "https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" },
-      { name: "Redis", badge: "https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" }
-    ]
-  },
-  {
-    category: "DevOps & Tools",
-    skills: [
-      { name: "Git", badge: "https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" },
-      { name: "GitHub", badge: "https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" },
-      { name: "Docker", badge: "https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" },
-      { name: "AWS", badge: "https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white" },
-      { name: "Vercel", badge: "https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" },
-      { name: "VS Code", badge: "https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white" },
-      { name: "Figma", badge: "https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" },
-      { name: "Postman", badge: "https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" }
-    ]
-  }
-];
+interface Experience {
+  company: string;
+  position: string;
+  period: string;
+  type: string;
+}
 
-// 프로젝트 데이터
-const projects = [
-  {
-    id: 1,
-    title: "E-커머스 웹사이트",
-    period: "2024.01 ~ 2024.03",
-    description: "React와 Node.js를 활용한 풀스택 쇼핑몰 웹사이트. 상품 관리, 장바구니, 결제 시스템을 구현했습니다.",
-    link: "https://github.com/username/ecommerce",
-    tech: ["React", "Node.js", "MongoDB", "Express"],
-    team: "개인 프로젝트",
-    image: "/images/portfolio/ecommerce-website.jpg",
-    type: "personal"
-  },
-  {
-    id: 2,
-    title: "할일 관리 앱",
-    period: "2023.11 ~ 2023.12",
-    description: "Next.js와 TypeScript를 사용한 현대적인 할일 관리 애플리케이션. 드래그 앤 드롭, 카테고리 분류 기능 포함.",
-    link: "https://github.com/username/todo-app",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS", "Prisma"],
-    team: "개인 프로젝트",
-    image: "/images/portfolio/todo-app.jpg",
-    type: "personal"
-  },
-  {
-    id: 3,
-    title: "회사 내부 관리 시스템",
-    period: "2024.05 ~ 2024.08",
-    description: "위니텍 재직 중 개발한 내부 직원 관리 및 프로젝트 추적 시스템. React와 Spring Boot를 활용.",
-    link: "#",
-    tech: ["React", "Spring Boot", "MySQL", "Docker"],
-    team: "팀 프로젝트 (3명)",
-    image: "/images/portfolio/management-system.jpg",
-    type: "work"
-  },
-  {
-    id: 4,
-    title: "날씨 대시보드",
-    period: "2023.09 ~ 2023.10",
-    description: "공공 API를 활용한 실시간 날씨 정보 대시보드. 지역별 날씨 조회 및 예보 기능을 제공합니다.",
-    link: "https://github.com/username/weather-dashboard",
-    tech: ["Vue.js", "Chart.js", "OpenWeather API"],
-    team: "개인 프로젝트",
-    image: "/images/portfolio/weather-dashboard.jpg",
-    type: "personal"
-  }
-];
+interface ProfileData {
+  name: string;
+  birthDate: string;
+  major: string;
+  image: string;
+  experience: Experience[];
+  links: SocialLink[];
+}
 
-// 자격증 및 교육 데이터
-const achievements = {
-  certifications: [
-    { name: "정보처리기사", date: "2023.05", issuer: "한국산업인력공단" },
-    { name: "SQLD", date: "2023.03", issuer: "한국데이터산업진흥원" },
-    { name: "컴활 1급", date: "2022.11", issuer: "대한상공회의소" }
-  ],
-  education: [
-    { name: "React 마스터클래스", date: "2024.01", institution: "온라인 강의" },
-    { name: "AWS 클라우드 기초", date: "2023.12", institution: "AWS 교육센터" },
-    { name: "알고리즘 문제해결", date: "2023.08", institution: "프로그래머스" }
-  ],
-  awards: [
-    { name: "대학교 프로그래밍 경진대회", rank: "우수상", date: "2023.06" },
-    { name: "해커톤 대회", rank: "장려상", date: "2023.04" }
-  ]
+interface Skill {
+  name: string;
+  badge: string;
+  skilled?: boolean;
+}
+
+interface TechStack {
+  category: string;
+  skills: Skill[];
+}
+
+interface Project {
+  id: number;
+  title: string;
+  period: string;
+  description: string;
+  link: string;
+  tech: string[];
+  team: string;
+  image: string;
+  type: string;
+}
+
+interface Certification {
+  name: string;
+  date: string;
+  issuer: string;
+}
+
+interface Education {
+  name: string;
+  date: string;
+  institution: string;
+}
+
+interface Award {
+  name: string;
+  rank: string;
+  date: string;
+}
+
+interface Achievements {
+  certifications: Certification[];
+  education: Education[];
+  awards: Award[];
+}
+
+const { profileData, techStacks, projects, achievements } = portfolioData as unknown as {
+  profileData: ProfileData;
+  techStacks: TechStack[];
+  projects: Project[];
+  achievements: Achievements;
 };
 
 export default function PortfolioPage() {
@@ -162,10 +99,23 @@ export default function PortfolioPage() {
               {/* 프로필 카드 */}
               <div className="card p-6">
                 <div className="text-center mb-6">
-                  <div className="w-32 h-32 mx-auto mb-4 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
-                    <svg className="w-16 h-16 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                  <div className="w-44 h-44 mx-auto mb-4 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center overflow-hidden">
+                    {profileData.image ? (
+                      <Image
+                        src={profileData.image}
+                        alt={profileData.name}
+                        width={160}
+                        height={160}
+                        className="w-full h-full object-cover object-center"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <svg className="w-16 h-16 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    )}
                   </div>
                   <h2 className="text-2xl font-bold text-neutral-900 mb-2">{profileData.name}</h2>
                   <p className="text-neutral-600">{profileData.major}</p>
@@ -186,44 +136,25 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                {/* 주요 기술 스택 */}
-                <div className="mb-6">
-                  <h3 className="font-semibold text-neutral-900 mb-3">주요 기술</h3>
-                  <div className="flex flex-wrap gap-2">
-                    <Image src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React" width={100} height={20} className="h-5" unoptimized />
-                    <Image src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white" alt="Next.js" width={100} height={20} className="h-5" unoptimized />
-                    <Image src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" width={100} height={20} className="h-5" unoptimized />
-                    <Image src="https://img.shields.io/badge/Node.js-43853D?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" width={100} height={20} className="h-5" unoptimized />
-                    <Image src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" width={100} height={20} className="h-5" unoptimized />
-                  </div>
-                </div>
 
                 {/* 링크 */}
                 <div>
                   <h3 className="font-semibold text-neutral-900 mb-3">링크</h3>
                   <div className="space-y-2">
-                    <a 
-                      href={profileData.links.github} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center space-x-2 text-neutral-700 hover:text-blue-600 transition-colors duration-200"
-                    >
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                      </svg>
-                      <span>GitHub</span>
-                    </a>
-                    <a 
-                      href={profileData.links.tistory} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center space-x-2 text-neutral-700 hover:text-blue-600 transition-colors duration-200"
-                    >
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.5 17.5h-3v-11h3v11zm0-12.5h-3v-2h3v2zm6.5 12.5h-3v-6.5c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5v6.5h-3v-11h3v1.816c.662-1.184 1.838-1.816 3-1.816 2.485 0 4.5 2.015 4.5 4.5v6.5z"/>
-                      </svg>
-                      <span>Tistory</span>
-                    </a>
+                    {profileData.links.map((link: SocialLink, index: number) => (
+                      <a 
+                        key={index}
+                        href={link.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-2 text-neutral-700 hover:text-blue-600 transition-colors duration-200"
+                      >
+                        <svg className="w-5 h-5" fill="currentColor" viewBox={link.viewBox || "0 0 24 24"}>
+                          <path d={link.svg}/>
+                        </svg>
+                        <span>{link.name}</span>
+                      </a>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -251,8 +182,8 @@ export default function PortfolioPage() {
             <section className="mb-12">
               <h1 className="text-4xl font-bold text-neutral-900 mb-4">소개</h1>
               <p className="text-xl text-neutral-600 leading-relaxed">
-                웹 개발에 대한 열정과 지속적인 학습을 통해 성장하는 개발자입니다.<br/>
-                사용자 경험을 중시하며, 깔끔하고 효율적인 코드를 작성하기 위해 노력합니다.
+                항상 "왜?"라는 질문을 던지며, 의도와 결과를 비교해 문제를 해결하고 있습니다.<br />
+                AI 활용에 관심이 많고, AI를 다양한 프로젝트에 활용하며 생산성과 효율성을 높이기 위해 노력 중입니다.<br />
               </p>
             </section>
 
@@ -334,7 +265,7 @@ export default function PortfolioPage() {
                       <div className="text-sm text-neutral-500 mb-3">{project.period} | {project.team}</div>
                       <p className="text-neutral-600 mb-4">{project.description}</p>
                       <div className="flex flex-wrap gap-2">
-                        {project.tech.map((tech) => (
+                        {project.tech.map((tech: string) => (
                           <span 
                             key={tech} 
                             className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
@@ -362,7 +293,7 @@ export default function PortfolioPage() {
                     자격증
                   </h3>
                   <div className="space-y-3">
-                    {achievements.certifications.map((cert, index) => (
+                    {achievements.certifications.map((cert: Certification, index: number) => (
                       <div key={index} className="border-l-2 border-blue-200 pl-3">
                         <div className="font-medium text-neutral-900">{cert.name}</div>
                         <div className="text-sm text-neutral-600">{cert.issuer}</div>
@@ -381,7 +312,7 @@ export default function PortfolioPage() {
                     교육 이수
                   </h3>
                   <div className="space-y-3">
-                    {achievements.education.map((edu, index) => (
+                    {achievements.education.map((edu: Education, index: number) => (
                       <div key={index} className="border-l-2 border-green-200 pl-3">
                         <div className="font-medium text-neutral-900">{edu.name}</div>
                         <div className="text-sm text-neutral-600">{edu.institution}</div>
@@ -400,10 +331,19 @@ export default function PortfolioPage() {
                     수상 이력
                   </h3>
                   <div className="space-y-3">
-                    {achievements.awards.map((award, index) => (
+                    {achievements.awards.map((award: Award, index: number) => (
                       <div key={index} className="border-l-2 border-yellow-200 pl-3">
-                        <div className="font-medium text-neutral-900">{award.name}</div>
-                        <div className="text-sm text-neutral-600">{award.rank}</div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <div className="font-medium text-neutral-900">{award.name}</div>
+                        </div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gradient-to-r from-yellow-100 to-orange-100 text-yellow-800 border border-yellow-200">
+                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                            {award.rank}
+                          </span>
+                        </div>
                         <div className="text-xs text-neutral-500">{award.date}</div>
                       </div>
                     ))}
@@ -420,14 +360,27 @@ export default function PortfolioPage() {
                   <div key={category.category} className="card p-6">
                     <h3 className="text-xl font-semibold text-neutral-900 mb-6">{category.category}</h3>
                     <div className="flex flex-wrap gap-3">
-                      {category.skills.map((skill) => (
-                        <div key={skill.name} className="transition-transform duration-200 hover:scale-105">
+                      {category.skills.map((skill: Skill) => (
+                        <div key={skill.name} className={`relative transition-transform duration-200 hover:scale-105 ${
+                          skill.skilled ? 'skilled-badge' : ''
+                        }`}>
+                          {skill.skilled && (
+                            <div className="absolute -top-2 -right-2 z-10">
+                              <span className="inline-flex items-center justify-center w-6 h-6 text-sm font-bold text-white bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full shadow-lg border-2 border-white animate-bounce">
+                                ⭐
+                              </span>
+                            </div>
+                          )}
                           <Image 
                             src={skill.badge} 
                             alt={skill.name}
                             width={120}
                             height={32}
-                            className="h-8 shadow-sm hover:shadow-md transition-shadow duration-200"
+                            className={`h-8 shadow-sm hover:shadow-md transition-all duration-200 ${
+                              skill.skilled 
+                                ? 'ring-2 ring-yellow-400 ring-opacity-70 shadow-yellow-200 hover:shadow-yellow-300' 
+                                : ''
+                            }`}
                             unoptimized
                           />
                         </div>
