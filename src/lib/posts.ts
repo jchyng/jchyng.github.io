@@ -17,7 +17,7 @@ function generatePostId(filePath: string): string {
 // 슬러그 생성 (URL에 사용할 형태)
 function generateSlug(filePath: string): string {
   const id = generatePostId(filePath);
-  return id.toLowerCase().replace(/\s+/g, '-');
+  return id.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-');
 }
 
 // 모든 마크다운 파일 경로 가져오기 (삭제된 파일 제외)

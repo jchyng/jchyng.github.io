@@ -8,8 +8,8 @@ interface PageProps {
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { id } = await params;
-  const slug = id;
-  const post = await getPostBySlug(slug);
+  const decodedId = decodeURIComponent(id);
+  const post = await getPostBySlug(decodedId);
 
   if (!post) {
     notFound();
@@ -103,11 +103,13 @@ export async function generateStaticParams() {
   try {
     const posts = await getAllPosts();
     
-    console.log('Generating static params for posts:', posts.map(p => p.slug));
-    
-    return posts.map((post) => ({
-      id: post.slug,
+    const params = posts.map((post) => ({
+      id: encodeURIComponent(post.slug),
     }));
+    
+    console.log('Generating static params for posts:', params.map(p => p.id));
+    
+    return params;
   } catch (error) {
     console.error('Error generating static params:', error);
     return [];
