@@ -8,7 +8,8 @@ interface PageProps {
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { id } = await params;
-  const post = await getPostBySlug(id);
+  const slug = id;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();
@@ -97,15 +98,18 @@ export default async function BlogPostPage({ params }: PageProps) {
   );
 }
 
+// 정적 경로 생성
 export async function generateStaticParams() {
   try {
     const posts = await getAllPosts();
     
+    console.log('Generating static params for posts:', posts.map(p => p.slug));
+    
     return posts.map((post) => ({
       id: post.slug,
     }));
-  } catch {
-    console.warn('Posts directory not found, generating empty static params');
+  } catch (error) {
+    console.error('Error generating static params:', error);
     return [];
   }
 }

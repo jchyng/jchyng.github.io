@@ -6,15 +6,12 @@ import markdownToHtml from './markdown';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
 
-// 게시글 ID 생성 (카테고리/월/파일명에서 날짜 제거)
+// 게시글 ID 생성 (카테고리/월/파일명)
 function generatePostId(filePath: string): string {
   const relativePath = path.relative(postsDirectory, filePath);
   const { dir, name } = path.parse(relativePath);
   
-  // 파일명에서 날짜 prefix 제거 (예: "15-제목" -> "제목")
-  const titleWithoutDate = name.replace(/^\d+-/, '');
-  
-  return `${dir}/${titleWithoutDate}`.replace(/\\/g, '/');
+  return `${dir}/${name}`.replace(/\\/g, '/');
 }
 
 // 슬러그 생성 (URL에 사용할 형태)
