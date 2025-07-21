@@ -16,6 +16,7 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loadingPostId, setLoadingPostId] = useState<string | null>(null);
+  const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState<boolean>(false);
   const postsPerPage = 5;
 
   const filteredPosts = useMemo(() => {
@@ -137,6 +138,52 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
               <p className="text-neutral-600">개발하면서 배운 것들과 경험을 기록합니다</p>
             </div> */}
 
+            {/* 모바일 카테고리 선택 */}
+            <div className="lg:hidden mb-6 relative">
+              <button 
+                onClick={() => setIsMobileCategoryOpen(!isMobileCategoryOpen)}
+                className="flex items-center justify-between w-full px-4 py-2 bg-white border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors duration-200"
+              >
+                <div className="flex items-center space-x-2">
+                  <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                  </svg>
+                  <span className="text-neutral-700">{selectedCategory}</span>
+                </div>
+                <svg 
+                  className={`w-5 h-5 text-neutral-400 transition-transform duration-200 ${isMobileCategoryOpen ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* 드롭다운 메뉴 */}
+              {isMobileCategoryOpen && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                  {allCategories.map((category) => (
+                    <button
+                      key={category.name}
+                      onClick={() => {
+                        handleCategoryClick(category.name);
+                        setIsMobileCategoryOpen(false);
+                      }}
+                      className={`flex items-center justify-between w-full px-4 py-3 text-left hover:bg-neutral-50 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg ${
+                        selectedCategory === category.name
+                          ? 'text-blue-600 bg-blue-50 font-medium'
+                          : 'text-neutral-700'
+                      }`}
+                    >
+                      <span>{category.name}</span>
+                      <span className="text-sm text-neutral-400">({category.count})</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* 검색 */}
             <div className="relative mb-8">
               <input
@@ -154,16 +201,6 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-            </div>
-
-            {/* 모바일 필터 버튼 */}
-            <div className="lg:hidden mb-6">
-              <button className="flex items-center space-x-2 px-4 py-2 bg-white border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors duration-200">
-                <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-                </svg>
-                <span className="text-neutral-700">필터</span>
-              </button>
             </div>
 
             {/* 선택된 카테고리 및 검색 결과 표시 */}
@@ -217,11 +254,7 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                               e.currentTarget.style.display = 'none';
                             }}
                           />
-                        ) : (
-                          <svg className="w-12 h-12 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        )}
+                        ) : null}
                       </div>
                     </div>
 

@@ -4,9 +4,9 @@ import { getRecentPosts } from "@/lib/posts";
 export default async function Home() {
   const recentPosts = await getRecentPosts(2);
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Simple Intro Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
