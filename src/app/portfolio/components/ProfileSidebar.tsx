@@ -22,6 +22,7 @@ interface ProfileData {
   birthDate: string;
   major: string;
   image: string;
+  email: string;
   experience: Experience[];
   links: SocialLink[];
 }
@@ -74,19 +75,33 @@ export default function ProfileSidebar({ profileData }: ProfileSidebarProps) {
             </div>
           </div>
 
+          {/* 이메일 */}
+          <div className="mb-4">
+            <h3 className="text-sm font-medium text-neutral-600 mb-2">연락처</h3>
+            <a 
+              href={`mailto:${profileData.email}`}
+              className="flex items-center space-x-2 text-sm text-neutral-600 hover:text-blue-600 transition-colors duration-200"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+              <span>{profileData.email}</span>
+            </a>
+          </div>
+
           {/* 링크 */}
           <div>
-            <h3 className="font-semibold text-neutral-900 mb-3">링크</h3>
-            <div className="space-y-2">
+            <h3 className="text-sm font-medium text-neutral-600 mb-2">링크</h3>
+            <div className="space-y-1">
               {profileData.links.map((link: SocialLink, index: number) => (
                 <a 
                   key={index}
                   href={link.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-2 text-neutral-700 hover:text-blue-600 transition-colors duration-200"
+                  className="flex items-center space-x-2 text-sm text-neutral-600 hover:text-blue-600 transition-colors duration-200"
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox={link.viewBox || "0 0 24 24"}>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox={link.viewBox || "0 0 24 24"}>
                     <path d={link.svg}/>
                   </svg>
                   <span>{link.name}</span>
