@@ -25,7 +25,9 @@
       "mcp__ide__getDiagnostics",
       "Bash(cat:*)",
       "Bash(rg:*)",
-      "WebFetch(domain:nextjs.org)"
+      "WebFetch(domain:nextjs.org)",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

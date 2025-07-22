@@ -3,13 +3,14 @@ import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPosts } from "@/lib/posts";
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string[] }>;
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const { id } = await params;
-  const decodedId = decodeURIComponent(id);
-  const post = await getPostBySlug(decodedId);
+  const { slug } = await params;
+  // slug 배열을 다시 경로로 조합
+  const fullSlug = slug.join('/');
+  const post = await getPostBySlug(fullSlug);
 
   if (!post) {
     notFound();
@@ -104,10 +105,10 @@ export async function generateStaticParams() {
     const posts = await getAllPosts();
     
     const params = posts.map((post) => ({
-      id: encodeURIComponent(post.slug),
+      slug: post.slug.split('/'), // slug를 배열로 분할
     }));
     
-    console.log('Generating static params for posts:', params.map(p => p.id));
+    console.log('Generating static params for posts:', params.map(p => p.slug));
     
     return params;
   } catch (error) {

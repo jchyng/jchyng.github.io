@@ -271,7 +271,7 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
 
                       {/* 더 읽기 - 우측 상단 */}
                       <Link 
-                        href={`/blog/${encodeURIComponent(post.slug)}`}
+                        href={`/blog/${post.slug}`}
                         onClick={() => handlePostClick(post.slug)}
                         className="absolute top-0 right-0 inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 text-sm"
                       >
@@ -293,7 +293,7 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                       {/* 제목 */}
                       <h2 className="text-xl font-semibold text-neutral-900 mb-3 hover:text-blue-600 transition-colors duration-200">
                         <Link 
-                          href={`/blog/${encodeURIComponent(post.slug)}`}
+                          href={`/blog/${post.slug}`}
                           onClick={() => handlePostClick(post.slug)}
                           className="flex items-center"
                         >

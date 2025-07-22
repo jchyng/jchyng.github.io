@@ -1,84 +1,150 @@
 # 블로그 게시글 작성 방법
 
-## 1. 파일 위치
-블로그 게시글은 `posts/` 폴더에 다음과 같은 구조로 작성합니다:
+## 📁 1. 폴더 구조 기반 카테고리 시스템
+
+블로그 게시글은 `posts/` 폴더에 **카테고리/년월/파일명** 구조로 작성합니다:
 
 ```
 posts/
-├── 카테고리명/
+├── react/
 │   ├── 2025-07/
-│   │   ├── 15-게시글제목.md
-│   │   └── 14-다른게시글.md
+│   │   ├── react-hooks-pattern.md
+│   │   └── state-management.md
 │   └── 2025-06/
-│       └── 30-월말회고.md
-└── 다른카테고리/
+│       └── component-design.md
+├── javascript/
+│   └── 2025-07/
+│       ├── async-await-guide.md
+│       └── es6-features.md
+└── backend/
     └── 2025-07/
-        └── 10-새로운글.md
+        └── node-express-tutorial.md
 ```
 
-## 2. 파일명 규칙
-- **형식**: `날짜-제목.md`
-- **임시 삭제**: `날짜-제목(삭제).md`
-- **예시**: `15-nextjs-블로그-만들기.md`
-- **날짜**: 일(日) 단위 (01-31)
-- **제목**: 한글, 영문, 숫자, 하이픈(-) 사용 가능
+## 📝 2. 명명 규칙 (중요!)
 
-## 3. Frontmatter 형식
-각 마크다운 파일의 상단에 다음과 같은 메타데이터를 작성합니다:
+### 📂 카테고리 폴더명
+- **⚠️ 카테고리 폴더명도 영문 권장** (GitHub Pages 호환성 및 SEO 최적화)
+- **형식**: `lowercase` 또는 `kebab-case`
+- **권장 예시**:
+  ```
+  posts/
+  ├── react/           ✅ 추천
+  ├── javascript/      ✅ 추천  
+  ├── typescript/      ✅ 추천
+  ├── backend/         ✅ 추천
+  ├── frontend/        ✅ 추천
+  ├── devops/          ✅ 추천
+  ├── data-science/    ✅ 추천 (하이픈 사용)
+  └── mobile-dev/      ✅ 추천
+  ```
+- **비추천 예시**:
+  ```
+  posts/
+  ├── 리액트/          ❌ 한글 폴더명
+  ├── 자바스크립트/     ❌ 한글 폴더명
+  └── 백엔드/          ❌ 한글 폴더명
+  ```
+
+### 📄 파일명 규칙
+- **⚠️ 파일명은 반드시 영문으로 작성** (GitHub Pages 호환성)
+- **형식**: `descriptive-filename.md`
+- **권장**: `kebab-case` 형태 (소문자, 하이픈 구분)
+- **예시**: 
+  - ✅ `react-hooks-pattern.md`
+  - ✅ `async-await-guide.md`
+  - ✅ `typescript-generics.md`
+  - ❌ `리액트-훅스-패턴.md` (한글 파일명)
+
+## 🏷️ 3. Frontmatter 형식 (간소화됨)
+
+**카테고리는 폴더명으로 자동 생성**되므로 frontmatter에서 제거되었습니다:
 
 ```markdown
 ---
-title: "게시글의 제목"
+title: "React Hook 사용 패턴 정리"
 date: "2025-07-15"
-category: "카테고리명"
-excerpt: "게시글 요약 (블로그 목록에 표시될 내용)"
-tags: ["태그1", "태그2", "태그3"]
-thumbnail: "/images/post-thumbnail.png"
+excerpt: "useState, useEffect, useCallback 등 자주 사용하는 Hook들의 올바른 사용법과 주의사항들을 정리해보았다."
+tags: ["React", "Hook", "useState", "useEffect", "최적화"]
+thumbnail: "/images/react-hooks.png"
 ---
 
-# 실제 게시글 내용
+# React Hook 사용 패턴 정리
 
-여기서부터 마크다운으로 내용을 작성합니다...
+실제 게시글 내용을 마크다운으로 작성합니다...
 ```
 
-## 4. 필수 필드
-- `title`: 게시글 제목 (필수)
-- `date`: 작성일 (YYYY-MM-DD 형식, 필수)  
-- `category`: 카테고리명 (필수)
-- `excerpt`: 게시글 요약 (필수)
-- `tags`: 태그 배열 (선택)
-- `thumbnail`: 썸네일 이미지 경로 (선택)
+## ✅ 4. 필수/선택 필드
 
-## 5. 작성 예시
+### 필수 필드
+- `title`: 게시글 제목
+- `date`: 작성일 (YYYY-MM-DD 형식)
+- `excerpt`: 게시글 요약 (목록 페이지에 표시)
+
+### 선택 필드  
+- `tags`: 태그 배열 (검색 및 분류용)
+- `thumbnail`: 썸네일 이미지 경로
+
+### ❌ 제거된 필드
+- `category`: 폴더명으로 자동 생성
+
+## 🎯 5. 실제 작성 예시
+
+**파일 위치**: `posts/react/2025-07/react-hooks-pattern.md`
 
 ```markdown
 ---
-title: "React Hook 완벽 가이드"
+title: "React Hook 사용 패턴 정리"
 date: "2025-07-15"
-category: "기술정리"
-excerpt: "React Hook의 올바른 사용법과 주의사항을 정리했습니다. useState, useEffect, useCallback 등을 다룹니다."
-tags: ["React", "Hook", "Frontend"]
-thumbnail: "/images/react-hooks-guide.png"
+excerpt: "실무에서 자주 사용하는 React Hook 패턴들과 주의사항을 정리했습니다. 성능 최적화 팁도 포함되어 있습니다."
+tags: ["React", "Hook", "Performance", "Pattern"]
 ---
 
-# React Hook 완벽 가이드
+# React Hook 사용 패턴 정리
 
-## useState 사용법
+## 1. useState 최적화 패턴
 
-React의 가장 기본적인 Hook인 useState에 대해 알아보겠습니다.
+함수형 업데이트를 사용하여 성능을 개선할 수 있습니다:
 
+\`\`\`javascript
 const [count, setCount] = useState(0);
 
-## useEffect 패턴
+// ❌ 비추천
+setCount(count + 1);
 
-의존성 배열 관리가 중요합니다...
+// ✅ 추천  
+setCount(prev => prev + 1);
+\`\`\`
+
+## 2. useEffect 의존성 관리
+
+...계속 작성
 ```
 
-## 6. 자동 기능
-- **카테고리 자동 생성**: 폴더명이 카테고리가 됩니다
-- **정렬**: 날짜순 내림차순으로 자동 정렬  
-- **URL 생성**: 슬러그 기반 URL 자동 생성
-- **태그 표시**: 게시글 목록과 상세 페이지에 태그 표시
+## 🔄 6. 자동화된 기능들
+
+- **📂 카테고리 자동 생성**: 폴더명(`react`, `javascript` 등)이 자동으로 카테고리가 됩니다
+- **📅 날짜순 정렬**: 최신 게시글이 상단에 자동 배치
+- **🔗 URL 생성**: `/blog/react/2025-07/react-hooks-pattern` 형태로 자동 생성
+- **🏷️ 태그 시스템**: 게시글 목록과 상세 페이지에 태그 자동 표시
+- **🔍 검색 기능**: 제목과 태그 기반 실시간 검색
+- **📱 반응형 디자인**: 모든 디바이스에서 최적화된 레이아웃
+
+## 🚀 7. 새 게시글 작성 순서
+
+1. **카테고리 폴더 확인/생성**: `posts/카테고리명/`
+2. **년월 폴더 생성**: `posts/카테고리명/2025-07/`
+3. **영문 파일명으로 생성**: `posts/카테고리명/2025-07/filename.md`
+4. **Frontmatter 작성**: 제목, 날짜, 요약, 태그
+5. **마크다운 내용 작성**
+6. **빌드 및 배포**: `npm run build` → GitHub Pages
+
+## ⚠️ 주의사항
+
+- **폴더명 & 파일명은 영문 권장**: 한글 사용 시 GitHub Pages에서 404 오류 발생 가능
+- **날짜 형식 준수**: `YYYY-MM-DD` 형식 (예: `2025-07-15`)
+- **카테고리 일관성**: 기존 카테고리 폴더명과 일치시키기
+- **URL 구조**: `/blog/카테고리/년월/파일명` 형태로 자동 생성되므로 모든 경로가 영문일 때 가장 안정적
 
 
 <br><br>  

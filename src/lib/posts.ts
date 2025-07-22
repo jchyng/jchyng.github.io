@@ -6,6 +6,14 @@ import markdownToHtml from './markdown';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
 
+// 파일 경로에서 카테고리 추출 (posts 하위 첫 번째 폴더명)
+function extractCategoryFromPath(filePath: string): string {
+  const relativePath = path.relative(postsDirectory, filePath);
+  const pathParts = relativePath.split(path.sep);
+  // posts/카테고리/년월/파일.md 구조에서 카테고리 부분 반환
+  return pathParts[0] || 'uncategorized';
+}
+
 // 게시글 ID 생성 (카테고리/월/파일명)
 function generatePostId(filePath: string): string {
   const relativePath = path.relative(postsDirectory, filePath);
@@ -14,10 +22,17 @@ function generatePostId(filePath: string): string {
   return `${dir}/${name}`.replace(/\\/g, '/');
 }
 
-// 슬러그 생성 (URL에 사용할 형태)
+// 슬러그 생성 (URL에 사용할 형태) - 원본 경로 (Next.js가 자동 인코딩)
 function generateSlug(filePath: string): string {
   const id = generatePostId(filePath);
-  return id.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-');
+  // Next.js가 자동으로 인코딩하므로 원본 반환
+  return id;
+}
+
+// 인코딩된 슬러그 생성 (내부 비교용)
+function generateEncodedSlug(filePath: string): string {
+  const id = generatePostId(filePath);
+  return encodeURIComponent(id);
 }
 
 // 모든 마크다운 파일 경로 가져오기 (삭제된 파일 제외)
@@ -58,21 +73,25 @@ export async function parsePost(filePath: string): Promise<Post | null> {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const { frontmatter, content } = parseFrontmatter(fileContent);
     
-    // frontmatter 검증
-    if (!frontmatter.title || !frontmatter.date || !frontmatter.category) {
+    // frontmatter 검증 (title, date만 필수)
+    if (!frontmatter.title || !frontmatter.date) {
       console.warn(`Invalid frontmatter in ${filePath}`);
       return null;
     }
     
     const htmlContent = await markdownToHtml(content);
     
+    // 폴더명에서 카테고리 자동 추출
+    const categoryFromPath = extractCategoryFromPath(filePath);
+    
     return {
       id: generatePostId(filePath),
       slug: generateSlug(filePath),
+      encodedSlug: generateEncodedSlug(filePath),
       frontmatter: {
         title: frontmatter.title,
         date: frontmatter.date,
-        category: frontmatter.category,
+        category: categoryFromPath, // 폴더명을 카테고리로 사용
         excerpt: frontmatter.excerpt || '',
         tags: frontmatter.tags || [],
         thumbnail: frontmatter.thumbnail
@@ -167,7 +186,10 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     if (fileName.includes('(삭제)')) continue;
     
     const fileSlug = generateSlug(filePath);
-    if (fileSlug === slug) {
+    const fileEncodedSlug = generateEncodedSlug(filePath);
+    
+    // 원본 slug 또는 인코딩된 slug와 매칭 확인
+    if (fileSlug === slug || fileEncodedSlug === slug) {
       return await parsePost(filePath);
     }
   }

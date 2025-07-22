@@ -10,6 +10,7 @@ export interface PostFrontmatter {
 export interface Post {
   id: string;
   slug: string;
+  encodedSlug: string;
   frontmatter: PostFrontmatter;
   content: string;
   filePath: string;
