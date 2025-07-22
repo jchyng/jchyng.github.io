@@ -117,3 +117,15 @@ Content in markdown...
 - Store images in `public/images/`
 - Reference as `/images/filename.png` in markdown
 - Optimize images before adding to repository
+
+### Blog Post Template
+- Use `blog-template.md` in the root directory as a starting template
+- Copy and modify template for new posts:
+  ```bash
+  cp blog-template.md posts/category/YYYY-MM/new-post.md
+  ```
+- Replace placeholder values:
+  - `POST_TITLE`: Your post title
+  - `YYYY-MM-DD`: Publication date
+  - `Brief description...`: Your post excerpt
+  - `Tag1, Tag2, Tag3`: Relevant tags

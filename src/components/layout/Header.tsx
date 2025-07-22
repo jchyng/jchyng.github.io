@@ -11,8 +11,10 @@ const Header = () => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
@@ -26,7 +28,7 @@ const Header = () => {
       <header 
         className={`
           fixed top-0 left-0 right-0 z-50 transition-all duration-300
-          ${isScrolled 
+          ${mounted && isScrolled 
             ? 'bg-white/80 backdrop-blur-md shadow-lg border-b border-neutral-200/50' 
             : 'bg-white/60 backdrop-blur-sm'
           }
@@ -45,7 +47,7 @@ const Header = () => {
                     alt="Dev.Blog Logo" 
                     width={32} 
                     height={32}
-                    className="w-8 h-8 object-cover"
+                    className="w-8 h-8 object-fill"
                   />
                 <span className="text-xl font-bold bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-transparent">
                   Dev.Blog

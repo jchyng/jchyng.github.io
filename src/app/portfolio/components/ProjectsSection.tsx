@@ -91,7 +91,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                     alt={project.title}
                     width={400}
                     height={250}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-fill"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
