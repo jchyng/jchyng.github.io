@@ -105,7 +105,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
                       alt={metadata.title}
                       width={400}
                       height={250}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-fill"
                     />
                   ) : (
                     <svg className="w-16 h-16 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
