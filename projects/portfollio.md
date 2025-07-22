@@ -5,6 +5,7 @@ description: "Next.js 15 기반 포트폴리오 겸 기술 블로그. 마크다�
 link: "https://jchyng.github.io"
 tech: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "GitHub Actions", "Gray-matter", "Remark"]
 team: "개인 프로젝트"
+image: "/images/portfolio/portfolio/thumbnail.png"
 type: "personal"
 ---
 

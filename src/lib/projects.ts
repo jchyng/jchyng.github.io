@@ -3,7 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 
 export interface ProjectMetadata {
-  id: number;
+  id: string;
   title: string;
   period: string;
   description: string;
@@ -37,10 +37,15 @@ export function getAllProjects(): ProjectMetadata[] {
         
         return {
           ...data,
-          id: parseInt(filename.replace(/\.md$/, ''), 10),
+          id: filename.replace(/\.md$/, ''),
         } as ProjectMetadata;
       })
-      .sort((a, b) => b.id - a.id); // ID 역순으로 정렬 (최신순)
+      .sort((a, b) => {
+        // 날짜순으로 정렬 (최신순)
+        const dateA = new Date(a.period.split(' ~ ')[0]);
+        const dateB = new Date(b.period.split(' ~ ')[0]);
+        return dateB.getTime() - dateA.getTime();
+      });
 
     return projects;
   } catch (error) {
@@ -62,7 +67,7 @@ export function getProjectById(id: string): Project | null {
     
     return {
       ...data,
-      id: parseInt(id, 10),
+      id,
       content,
     } as Project;
   } catch (error) {
