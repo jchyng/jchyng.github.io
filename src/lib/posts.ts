@@ -3,6 +3,7 @@ import path from 'path';
 import { Post, Category, PostsByCategory, PostMetadata } from '@/types/post';
 import { parseFrontmatter } from './markdown';
 import markdownToHtml from './markdown';
+import { sortByDate } from '@/utils/date';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
 
@@ -118,9 +119,7 @@ export async function getAllPosts(): Promise<Post[]> {
   }
   
   // 날짜별 내림차순 정렬
-  return posts.sort((a, b) => {
-    return new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime();
-  });
+  return sortByDate(posts);
 }
 
 // 카테고리별 게시글 그룹화

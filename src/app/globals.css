@@ -84,7 +84,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Utility Classes */
+/* Layout Utilities */
 .container-custom {
   max-width: var(--container-max);
   margin: 0 auto;
@@ -103,6 +103,7 @@ body {
   }
 }
 
+/* Button Components */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -129,6 +130,7 @@ body {
   outline-offset: 2px;
 }
 
+/* Card Components */
 .card {
   background: white;
   border-radius: 0.75rem;
@@ -141,6 +143,7 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+/* Animation Utilities */
 .animate-fade-in {
   animation: fadeIn var(--duration-normal) ease-out;
 }
@@ -292,7 +295,7 @@ body {
   color: var(--color-neutral-700);
 }
 
-/* Line clamp utility */
+/* Text Utilities */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

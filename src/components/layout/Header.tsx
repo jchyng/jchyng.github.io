@@ -4,16 +4,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { NAVIGATION_ITEMS } from '@/constants/ui';
+import Icon from '@/components/ui/Icon';
 
 const Header = () => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const navigation = [
-    { name: '포트폴리오', href: '/portfolio', description: '경력 및 프로젝트' },
-    { name: '개발 블로그', href: '/blog', description: '기술 블로그 및 인사이트' },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +55,7 @@ const Header = () => {
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-1">
-              {navigation.map((item) => {
+              {NAVIGATION_ITEMS.map((item) => {
                 const isActive = pathname === item.href;
                 return (
                   <Link
@@ -92,18 +89,11 @@ const Header = () => {
                 className="p-2 rounded-lg text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition-all duration-200"
                 aria-label="Toggle mobile menu"
               >
-                <svg 
-                  className={`w-6 h-6 transition-transform duration-200 ${isMobileMenuOpen ? 'rotate-90' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  {isMobileMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
+                <Icon 
+                  name={isMobileMenuOpen ? 'close' : 'menu'}
+                  className={`transition-transform duration-200 ${isMobileMenuOpen ? 'rotate-90' : ''}`}
+                  size={24}
+                />
               </button>
             </div>
           </div>
@@ -123,7 +113,7 @@ const Header = () => {
         <div className="bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xl">
           <div className="container-custom py-4">
             <nav className="space-y-2">
-              {navigation.map((item) => {
+              {NAVIGATION_ITEMS.map((item) => {
                 const isActive = pathname === item.href;
                 return (
                   <Link

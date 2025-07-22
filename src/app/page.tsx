@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getRecentPosts } from "@/lib/posts";
+import { formatKoreanDate } from "@/utils/date";
+import Icon from "@/components/ui/Icon";
 
 export default async function Home() {
   const recentPosts = await getRecentPosts(2);
@@ -48,11 +50,7 @@ export default async function Home() {
                     <div className="flex items-center text-sm text-neutral-500 mb-3">
                       <span>{post.frontmatter.category}</span>
                       <span className="mx-2">·</span>
-                      <time>{new Date(post.frontmatter.date).toLocaleDateString('ko-KR', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit'
-                      }).replace(/\. /g, '.').replace(/\.$/, '')}</time>
+                      <time>{formatKoreanDate(post.frontmatter.date)}</time>
                     </div>
                     <h3 className="text-lg font-semibold text-neutral-900 mb-2 line-clamp-2">
                       {post.frontmatter.title}
@@ -73,19 +71,7 @@ export default async function Home() {
               >
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-blue-200 transition-colors duration-300">
-                    <svg
-                      className="w-6 h-6 text-blue-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                      />
-                    </svg>
+                    <Icon name="portfolio" className="text-blue-600" size={24} />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-neutral-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
@@ -96,19 +82,7 @@ export default async function Home() {
                     </p>
                     <div className="flex items-center mt-4 text-blue-600 group-hover:translate-x-1 transition-transform duration-300">
                       <span className="text-sm font-medium">자세히 보기</span>
-                      <svg
-                        className="w-4 h-4 ml-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
+                      <Icon name="arrow" className="ml-1" size={16} />
                     </div>
                   </div>
                 </div>
@@ -120,19 +94,7 @@ export default async function Home() {
               >
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-purple-200 transition-colors duration-300">
-                    <svg
-                      className="w-6 h-6 text-purple-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                      />
-                    </svg>
+                    <Icon name="blog" className="text-purple-600" size={24} />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-neutral-900 mb-2 group-hover:text-purple-600 transition-colors duration-300">
@@ -144,19 +106,7 @@ export default async function Home() {
                     </p>
                     <div className="flex items-center mt-4 text-purple-600 group-hover:translate-x-1 transition-transform duration-300">
                       <span className="text-sm font-medium">게시글 보기</span>
-                      <svg
-                        className="w-4 h-4 ml-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
+                      <Icon name="arrow" className="ml-1" size={16} />
                     </div>
                   </div>
                 </div>
