@@ -3,7 +3,7 @@ title: "요즘 핫한 Claude Code🔥 어떻게 사용하는 걸까?"
 date: "2025-07-07"
 excerpt: "Claude Code의 설치 과정부터 실무 활용까지 체계적으로 정리했습니다. WSL 환경 구성, 메모리 관리, 레퍼런스 첨부 기능 등 개발 생산성을 높이는 핵심 기능들을 다룹니다."
 tags: ["Claude", "Claude Code", "VibeCoding"]
-thumbnail: "/images/posts/AI/claude-code.png"
+thumbnail: "/images/posts/AI/claude-code/thumbnail.png"
 ---
 
 # 클로드 코드 설치하기
@@ -34,19 +34,19 @@ claude
 
 # 클로드 코드 사용 방법 및 주요 기능
 설치가 완료되었다면 원하는 프로젝트 경로에서 `claude` 명령어를 입력하면 바로 아래와 같이 실행된다.
-![img](/images/posts/AI/claude-code.png)
+![img](/images/posts/AI/claude-code/thumbnail.png)
 
 ## 설정 
 
 ### /config
 `/config` 명령을 통해서 설정이 가능하다.  
 `/compact` 명령을 통해 컨텍스트를 압축할 수 있는데, `Auth-compact`는 토큰 사용량을 줄이기 위해 컨텍스트 용량이 95%를 초과하게 되면 자동으로 압축을 진행하는 설정이다.   
- ![img](/images/posts/AI/config.png)
+ ![img](/images/posts/AI/claude-code/config.png)
 
 ### settings.json
 claude를 사용하다 보면 .claude/settings.local.json이 생성되는 것을 볼 수 있다.
 `settings.local.json`은 claude가 파일이나 디렉터리에 접근할 때 `permission check`를 하게되는데 이를 기억해두거나 `API Key`, `env` 등 다양한 설정을 정의해두는 파일이다.  
-![img](/images/posts/AI/settingsjson.png)
+![img](/images/posts/AI/claude-code/settingsjson.png)
 
 `/model`을 사용하면 claude의 모델을 선택할 수 있다.
 현재 가장 강력한 모델인 `Opus 4` 같은 경우에는 `pro` 요금제에서는 사용할 수 없기 때문에 `max`인 사용자만 보면된다.
@@ -70,7 +70,7 @@ CLAUDE.md는 프로젝트 경로에 생성하면 해당 프로젝트에서만 �
 - 이미지: `shift` + 드래그 앤 드롭
 
 커맨드를 사용하지 않는다면 클로드가 켜져있는 상태에서 원하는 파일을 열고, 해당 파일을 클릭하면 파일 전체가 첨부되고, 특정 영역을 드래그하면 해당 텍스트가 첨부된다.
-![img](/images/posts/AI/reference.png)
+![img](/images/posts/AI/claude-code/reference.png)
 
 <br/>
 
