@@ -6,9 +6,9 @@ import matter from 'gray-matter';
 
 export default async function markdownToHtml(markdown: string) {
   const result = await remark()
-    .use(remarkRehype)
+    .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypePrism)
-    .use(rehypeStringify)
+    .use(rehypeStringify, { allowDangerousHtml: true })
     .process(markdown)
   return result.toString()
 }

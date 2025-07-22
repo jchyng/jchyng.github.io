@@ -65,7 +65,6 @@ export default async function BlogPostPage({ params }: PageProps) {
           {/* 태그 */}
           {post.frontmatter.tags && post.frontmatter.tags.length > 0 && (
             <div className="mt-12 pt-8 border-t border-neutral-200">
-              <h3 className="text-sm font-medium text-neutral-700 mb-4">태그</h3>
               <div className="flex flex-wrap gap-2">
                 {post.frontmatter.tags.map((tag) => (
                   <span 
