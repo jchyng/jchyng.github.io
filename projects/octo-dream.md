@@ -6,7 +6,7 @@ link: ""
 tech: ["Java 17", "Gradle", "Spring Boot 2.7", "Spring Security", "Spring Cloud", "JPA", "MySQL", "AWS (EC2, RDS, S3)", "GitHub Actions"]
 team: "캡스톤 디자인 & 정보기술학회 대학생 논문경진대회"
 award: "논문대회 은상"
-image: "/images/portfolio/octodream/thumbnail.png"
+image: "/images/portfolio/octo-dream/thumbnail.png"
 type: "team"
 ---
 

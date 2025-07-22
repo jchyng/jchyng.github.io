@@ -75,6 +75,8 @@ npm start
 - Portfolio information stored in `src/app/portfolio/data.json`
 - Includes projects, skills, certifications, achievements
 - Modify this file to update portfolio content
+- **Project files**: Store detailed project documentation in `projects/` directory
+- **Project file naming**: Use lowercase letters with hyphens only (e.g., `used-price-calc.md`, `my-awesome-project.md`)
 
 ## Important Configuration
 
