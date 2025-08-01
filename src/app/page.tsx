@@ -44,7 +44,7 @@ export default async function Home() {
                 {recentPosts.map((post) => (
                   <Link
                     key={post.id}
-                    href={`/blog/${encodeURIComponent(post.id)}`}
+                    href={`/blog/${post.slug}`}
                     className="card p-6 hover:shadow-lg transition-shadow duration-300"
                   >
                     <div className="flex items-center text-sm text-neutral-500 mb-3">
