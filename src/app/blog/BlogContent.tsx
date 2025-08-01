@@ -3,15 +3,18 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useMemo } from "react";
-import { Post, Category } from "@/types/post";
+import { Post, Category, CategoryHierarchy } from "@/types/post";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import CategoryTreeDesign from "@/components/ui/CategoryTreeDesign";
+import MobileCategoryDropdownDesign from "@/components/ui/MobileCategoryDropdownDesign";
 
 interface BlogContentProps {
   posts: Post[];
   categories: Category[];
+  categoryHierarchy: CategoryHierarchy[];
 }
 
-export default function BlogContent({ posts, categories }: BlogContentProps) {
+export default function BlogContent({ posts, categories, categoryHierarchy }: BlogContentProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -25,7 +28,9 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
       selectedCategory === "전체"
         ? posts
         : posts.filter(
-            (post) => post.frontmatter.category === selectedCategory
+            (post) => 
+              post.frontmatter.category === selectedCategory ||
+              post.frontmatter.category.startsWith(`${selectedCategory}/`)
           );
 
     if (searchTerm) {
@@ -102,10 +107,10 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
     );
   };
 
-  const allCategories = [
-    { name: "전체", count: posts.length, posts: [] },
-    ...categories,
-  ];
+  // const allCategories = [
+  //   { name: "전체", count: posts.length, posts: [] },
+  //   ...categories,
+  // ];
 
   return (
     <div className="min-h-screen bg-neutral-50 relative">
@@ -131,25 +136,12 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                 <h3 className="font-semibold text-neutral-900 mb-4">
                   카테고리
                 </h3>
-                <ul className="space-y-2">
-                  {allCategories.map((category) => (
-                    <li key={category.name}>
-                      <button
-                        onClick={() => handleCategoryClick(category.name)}
-                        className={`flex items-center justify-between w-full px-3 py-2 text-left rounded-lg transition-colors duration-200 ${
-                          selectedCategory === category.name
-                            ? "text-blue-600 bg-blue-50 font-medium"
-                            : "text-neutral-700 hover:text-blue-600 hover:bg-blue-50"
-                        }`}
-                      >
-                        <span>{category.name}</span>
-                        <span className="text-sm text-neutral-400">
-                          ({category.count})
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                <CategoryTreeDesign
+                  categories={categoryHierarchy}
+                  selectedCategory={selectedCategory}
+                  onCategorySelect={handleCategoryClick}
+                  allPostsCount={posts.length}
+                />
               </div>
             </div>
           </aside>
@@ -163,69 +155,14 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
             </div> */}
 
             {/* 모바일 카테고리 선택 */}
-            <div className="lg:hidden mb-6 relative">
-              <button
-                onClick={() => setIsMobileCategoryOpen(!isMobileCategoryOpen)}
-                className="flex items-center justify-between w-full px-4 py-2 bg-white border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors duration-200"
-              >
-                <div className="flex items-center space-x-2">
-                  <svg
-                    className="w-5 h-5 text-neutral-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                    />
-                  </svg>
-                  <span className="text-neutral-700">{selectedCategory}</span>
-                </div>
-                <svg
-                  className={`w-5 h-5 text-neutral-400 transition-transform duration-200 ${
-                    isMobileCategoryOpen ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              {/* 드롭다운 메뉴 */}
-              {isMobileCategoryOpen && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-                  {allCategories.map((category) => (
-                    <button
-                      key={category.name}
-                      onClick={() => {
-                        handleCategoryClick(category.name);
-                        setIsMobileCategoryOpen(false);
-                      }}
-                      className={`flex items-center justify-between w-full px-4 py-3 text-left hover:bg-neutral-50 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg ${
-                        selectedCategory === category.name
-                          ? "text-blue-600 bg-blue-50 font-medium"
-                          : "text-neutral-700"
-                      }`}
-                    >
-                      <span>{category.name}</span>
-                      <span className="text-sm text-neutral-400">
-                        ({category.count})
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <MobileCategoryDropdownDesign
+              categories={categoryHierarchy}
+              selectedCategory={selectedCategory}
+              onCategorySelect={handleCategoryClick}
+              allPostsCount={posts.length}
+              isOpen={isMobileCategoryOpen}
+              onToggle={() => setIsMobileCategoryOpen(!isMobileCategoryOpen)}
+            />
 
             {/* 검색 */}
             <div className="relative mb-8">
@@ -259,7 +196,7 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                     <>
                       <span>카테고리:</span>
                       <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
-                        {selectedCategory}
+                        {selectedCategory.split('/').join(' > ')}
                       </span>
                     </>
                   )}
@@ -316,7 +253,7 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                         {/* 메타 정보 */}
                         <div className="flex items-center space-x-2 text-sm text-neutral-500 mb-2 pr-20">
                           <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                            {post.frontmatter.category}
+                            {post.frontmatter.category.split('/').join(' > ')}
                           </span>
                           <span>·</span>
                           <time>

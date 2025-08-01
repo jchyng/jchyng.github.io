@@ -1,18 +1,27 @@
 import fs from 'fs';
 import path from 'path';
-import { Post, Category, PostsByCategory, PostMetadata } from '@/types/post';
+import { Post, Category, PostsByCategory, PostMetadata, CategoryHierarchy, CategoryHierarchyMap } from '@/types/post';
 import { parseFrontmatter } from './markdown';
 import markdownToHtml from './markdown';
 import { sortByDate } from '@/utils/date';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
 
-// 파일 경로에서 카테고리 추출 (posts 하위 첫 번째 폴더명)
+// 파일 경로에서 카테고리 추출 (posts 하위 폴더 계층 구조 지원)
 function extractCategoryFromPath(filePath: string): string {
   const relativePath = path.relative(postsDirectory, filePath);
   const pathParts = relativePath.split(path.sep);
-  // posts/카테고리/년월/파일.md 구조에서 카테고리 부분 반환
-  return pathParts[0] || 'uncategorized';
+  
+  // 파일명 제거하고 폴더 계층만 추출
+  const folderParts = pathParts.slice(0, -1);
+  
+  // 빈 배열이면 uncategorized
+  if (folderParts.length === 0) {
+    return 'uncategorized';
+  }
+  
+  // 계층 구조를 '/' 구분자로 연결
+  return folderParts.join('/');
 }
 
 // 게시글 ID 생성 (카테고리/월/파일명)
@@ -149,10 +158,19 @@ export async function getCategories(): Promise<Category[]> {
   }));
 }
 
-// 특정 카테고리의 게시글 가져오기
-export async function getPostsByCategoryName(categoryName: string): Promise<Post[]> {
+// 특정 카테고리의 게시글 가져오기 (하위 카테고리 포함)
+export async function getPostsByCategoryName(categoryName: string, includeSubcategories: boolean = false): Promise<Post[]> {
   const posts = await getAllPosts();
-  return posts.filter(post => post.frontmatter.category === categoryName);
+  
+  if (!includeSubcategories) {
+    return posts.filter(post => post.frontmatter.category === categoryName);
+  }
+  
+  // 하위 카테고리 포함하여 검색
+  return posts.filter(post => 
+    post.frontmatter.category === categoryName || 
+    post.frontmatter.category.startsWith(`${categoryName}/`)
+  );
 }
 
 // ID로 특정 게시글 가져오기 (최적화된 버전)
@@ -231,4 +249,130 @@ export async function getRelatedPosts(currentPost: Post, limit: number = 3): Pro
 export async function getRecentPosts(limit: number = 2): Promise<Post[]> {
   const posts = await getAllPosts();
   return posts.slice(0, limit);
+}
+
+// 카테고리 계층 구조 분석
+export function analyzeCategoryHierarchy(categories: string[]): CategoryHierarchyMap {
+  const hierarchyMap: CategoryHierarchyMap = {};
+  
+  // 먼저 모든 경로와 중간 경로들을 생성하고 정렬
+  const allPaths = new Set<string>();
+  
+  categories.forEach(categoryPath => {
+    const parts = categoryPath.split('/');
+    let currentPath = '';
+    
+    parts.forEach((part, index) => {
+      currentPath = index === 0 ? part : `${currentPath}/${part}`;
+      allPaths.add(currentPath);
+    });
+  });
+  
+  // 경로 길이순으로 정렬 (짧은 경로부터 처리)
+  const sortedPaths = Array.from(allPaths).sort((a, b) => {
+    const aLevel = a.split('/').length;
+    const bLevel = b.split('/').length;
+    if (aLevel !== bLevel) return aLevel - bLevel;
+    return a.localeCompare(b);
+  });
+  
+  // 모든 경로에 대해 카테고리 생성
+  sortedPaths.forEach(categoryPath => {
+    const parts = categoryPath.split('/');
+    const level = parts.length - 1;
+    const displayName = parts[parts.length - 1];
+    const parent = level > 0 ? parts.slice(0, -1).join('/') : null;
+    
+    // 카테고리 생성
+    if (!hierarchyMap[categoryPath]) {
+      hierarchyMap[categoryPath] = {
+        name: categoryPath,
+        displayName,
+        level,
+        parent,
+        children: [],
+        count: 0,
+        posts: []
+      };
+    }
+    
+    // 부모에 자식 추가 (부모가 이미 존재하므로 안전하게 추가 가능)
+    if (parent && hierarchyMap[parent]) {
+      if (!hierarchyMap[parent].children.includes(categoryPath)) {
+        hierarchyMap[parent].children.push(categoryPath);
+      }
+    }
+  });
+  
+  return hierarchyMap;
+}
+
+// 계층 구조 카테고리 정보 가져오기
+export async function getCategoryHierarchy(): Promise<CategoryHierarchyMap> {
+  const postsByCategory = await getPostsByCategory();
+  const categoryPaths = Object.keys(postsByCategory);
+  const hierarchyMap = analyzeCategoryHierarchy(categoryPaths);
+  
+  // 각 카테고리에 게시글 정보 추가
+  Object.entries(postsByCategory).forEach(([categoryPath, posts]) => {
+    if (hierarchyMap[categoryPath]) {
+      hierarchyMap[categoryPath].posts = posts;
+      hierarchyMap[categoryPath].count = posts.length;
+    }
+  });
+  
+  // 부모 카테고리에 자식 게시글 수 합산 (Optional: 부모가 직접 게시글을 가지지 않을때)
+  Object.values(hierarchyMap).forEach(category => {
+    if (category.children.length > 0 && category.count === 0) {
+      // 자식들의 게시글 수를 합산하여 표시 (선택적)
+      // 그러나 이번에는 직접 게시글이 없는 폴더는 0으로 유지
+    }
+  });
+  
+  return hierarchyMap;
+}
+
+// 루트 카테고리들 가져오기 (레벨 0)
+export async function getRootCategories(): Promise<CategoryHierarchy[]> {
+  const hierarchyMap = await getCategoryHierarchy();
+  
+  return Object.values(hierarchyMap)
+    .filter(category => category.level === 0)
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// 특정 카테고리의 자식 카테고리들 가져오기
+export async function getChildCategories(parentPath: string): Promise<CategoryHierarchy[]> {
+  const hierarchyMap = await getCategoryHierarchy();
+  const parent = hierarchyMap[parentPath];
+  
+  if (!parent) return [];
+  
+  return parent.children
+    .map(childPath => hierarchyMap[childPath])
+    .filter(Boolean)
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// 카테고리 경로가 유효한지 확인
+export async function isCategoryPathValid(categoryPath: string): Promise<boolean> {
+  const hierarchyMap = await getCategoryHierarchy();
+  return categoryPath in hierarchyMap;
+}
+
+// 카테고리 경로의 브레드크럼 생성
+export function getCategoryBreadcrumb(categoryPath: string): Array<{name: string, path: string}> {
+  const parts = categoryPath.split('/');
+  const breadcrumb: Array<{name: string, path: string}> = [];
+  
+  let currentPath = '';
+  parts.forEach((part, index) => {
+    currentPath = index === 0 ? part : `${currentPath}/${part}`;
+    breadcrumb.push({
+      name: part,
+      path: currentPath
+    });
+  });
+  
+  return breadcrumb;
 }
