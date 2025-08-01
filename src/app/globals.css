@@ -198,9 +198,22 @@ body {
   color: var(--color-neutral-800);
 }
 
+.markdown-content h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem 0;
+  color: var(--color-neutral-800);
+}
+
 .markdown-content p {
   margin: 1rem 0;
   color: var(--color-neutral-700);
+}
+
+.markdown-content strong, .markdown-content b {
+  font-weight: 700;
+  font-size: 1.05em;
+  color: var(--color-neutral-900);
 }
 
 .markdown-content ul, .markdown-content ol {
@@ -278,7 +291,7 @@ body {
   background: var(--color-primary-100);
 }
 
-/* Dark mode inline code styling */
+/* Dark mode styling */
 @media (prefers-color-scheme: dark) {
   .markdown-content code:not(pre code) {
     background: rgba(14, 165, 233, 0.1);
@@ -288,6 +301,14 @@ body {
   
   .markdown-content code:not(pre code):hover {
     background: rgba(14, 165, 233, 0.2);
+  }
+  
+  .markdown-content h4 {
+    color: var(--color-neutral-200);
+  }
+  
+  .markdown-content strong, .markdown-content b {
+    color: var(--color-neutral-100);
   }
 }
 
