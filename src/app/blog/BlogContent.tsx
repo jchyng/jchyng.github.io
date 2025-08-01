@@ -16,26 +16,39 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loadingPostId, setLoadingPostId] = useState<string | null>(null);
-  const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState<boolean>(false);
+  const [isMobileCategoryOpen, setIsMobileCategoryOpen] =
+    useState<boolean>(false);
   const postsPerPage = 5;
 
   const filteredPosts = useMemo(() => {
-    let result = selectedCategory === "전체" ? posts : 
-      posts.filter(post => post.frontmatter.category === selectedCategory);
-    
+    let result =
+      selectedCategory === "전체"
+        ? posts
+        : posts.filter(
+            (post) => post.frontmatter.category === selectedCategory
+          );
+
     if (searchTerm) {
-      result = result.filter(post => 
-        post.frontmatter.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.frontmatter.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      result = result.filter(
+        (post) =>
+          post.frontmatter.title
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          post.frontmatter.tags.some((tag) =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase())
+          )
       );
     }
-    
+
     return result;
   }, [selectedCategory, posts, searchTerm]);
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const startIndex = (currentPage - 1) * postsPerPage;
-  const paginatedPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+  const paginatedPosts = filteredPosts.slice(
+    startIndex,
+    startIndex + postsPerPage
+  );
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory(categoryName);
@@ -60,12 +73,16 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
     const range = [];
     const rangeWithDots = [];
 
-    for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
+    for (
+      let i = Math.max(2, currentPage - delta);
+      i <= Math.min(totalPages - 1, currentPage + delta);
+      i++
+    ) {
       range.push(i);
     }
 
     if (currentPage - delta > 2) {
-      rangeWithDots.push(1, '...');
+      rangeWithDots.push(1, "...");
     } else {
       rangeWithDots.push(1);
     }
@@ -73,19 +90,21 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
     rangeWithDots.push(...range);
 
     if (currentPage + delta < totalPages - 1) {
-      rangeWithDots.push('...', totalPages);
+      rangeWithDots.push("...", totalPages);
     } else {
       if (totalPages > 1) {
         rangeWithDots.push(totalPages);
       }
     }
 
-    return rangeWithDots.filter((item, index, arr) => arr.indexOf(item) === index);
+    return rangeWithDots.filter(
+      (item, index, arr) => arr.indexOf(item) === index
+    );
   };
 
   const allCategories = [
     { name: "전체", count: posts.length, posts: [] },
-    ...categories
+    ...categories,
   ];
 
   return (
@@ -95,33 +114,38 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
         <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="flex flex-col items-center space-y-4">
             <LoadingSpinner size="lg" />
-            <p className="text-neutral-600 font-medium">게시글을 불러오는 중...</p>
+            <p className="text-neutral-600 font-medium">
+              게시글을 불러오는 중...
+            </p>
           </div>
         </div>
       )}
-      
+
       <div className="container-custom py-8">
         <div className="flex gap-8">
           {/* 사이드바 */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <div className="sticky top-24">
-
               {/* 카테고리 */}
               <div className="card p-4">
-                <h3 className="font-semibold text-neutral-900 mb-4">카테고리</h3>
+                <h3 className="font-semibold text-neutral-900 mb-4">
+                  카테고리
+                </h3>
                 <ul className="space-y-2">
                   {allCategories.map((category) => (
                     <li key={category.name}>
-                      <button 
+                      <button
                         onClick={() => handleCategoryClick(category.name)}
                         className={`flex items-center justify-between w-full px-3 py-2 text-left rounded-lg transition-colors duration-200 ${
                           selectedCategory === category.name
-                            ? 'text-blue-600 bg-blue-50 font-medium'
-                            : 'text-neutral-700 hover:text-blue-600 hover:bg-blue-50'
+                            ? "text-blue-600 bg-blue-50 font-medium"
+                            : "text-neutral-700 hover:text-blue-600 hover:bg-blue-50"
                         }`}
                       >
                         <span>{category.name}</span>
-                        <span className="text-sm text-neutral-400">({category.count})</span>
+                        <span className="text-sm text-neutral-400">
+                          ({category.count})
+                        </span>
                       </button>
                     </li>
                   ))}
@@ -140,23 +164,40 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
 
             {/* 모바일 카테고리 선택 */}
             <div className="lg:hidden mb-6 relative">
-              <button 
+              <button
                 onClick={() => setIsMobileCategoryOpen(!isMobileCategoryOpen)}
                 className="flex items-center justify-between w-full px-4 py-2 bg-white border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors duration-200"
               >
                 <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                  <svg
+                    className="w-5 h-5 text-neutral-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                    />
                   </svg>
                   <span className="text-neutral-700">{selectedCategory}</span>
                 </div>
-                <svg 
-                  className={`w-5 h-5 text-neutral-400 transition-transform duration-200 ${isMobileCategoryOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
+                <svg
+                  className={`w-5 h-5 text-neutral-400 transition-transform duration-200 ${
+                    isMobileCategoryOpen ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
 
@@ -172,12 +213,14 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                       }}
                       className={`flex items-center justify-between w-full px-4 py-3 text-left hover:bg-neutral-50 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg ${
                         selectedCategory === category.name
-                          ? 'text-blue-600 bg-blue-50 font-medium'
-                          : 'text-neutral-700'
+                          ? "text-blue-600 bg-blue-50 font-medium"
+                          : "text-neutral-700"
                       }`}
                     >
                       <span>{category.name}</span>
-                      <span className="text-sm text-neutral-400">({category.count})</span>
+                      <span className="text-sm text-neutral-400">
+                        ({category.count})
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -193,13 +236,18 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
                 onChange={handleSearchChange}
                 className="w-full pl-10 pr-4 py-3 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white shadow-sm"
               />
-              <svg 
-                className="absolute left-3 top-3.5 w-5 h-5 text-neutral-400" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="absolute left-3 top-3.5 w-5 h-5 text-neutral-400"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
             </div>
 
@@ -233,102 +281,121 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
               {filteredPosts.length === 0 ? (
                 <div className="text-center py-12">
                   <div className="text-neutral-500">
-                    {searchTerm ? "검색 결과가 없습니다." : "해당 카테고리에 게시글이 없습니다."}
+                    {searchTerm
+                      ? "검색 결과가 없습니다."
+                      : "해당 카테고리에 게시글이 없습니다."}
                   </div>
                 </div>
               ) : (
                 paginatedPosts.map((post) => (
-                <article key={post.id} className="card p-6 hover:shadow-lg transition-all duration-300">
-                  <div className="flex flex-col md:flex-row gap-6">
-                    {/* 썸네일 */}
-                    <div className="md:w-48 md:flex-shrink-0 md:self-stretch">
-                      <div className="h-full rounded-lg overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                        {post.frontmatter.thumbnail ? (
-                          <Image
-                            src={post.frontmatter.thumbnail}
-                            alt={post.frontmatter.title}
-                            width={192}
-                            height={128}
-                            className="w-full h-full object-fill"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                            }}
-                          />
-                        ) : null}
-                      </div>
-                    </div>
-
-                    {/* 콘텐츠 */}
-                    <div className="flex-1 relative">
-                      {/* 메타 정보 */}
-                      <div className="flex items-center space-x-2 text-sm text-neutral-500 mb-2 pr-20">
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                          {post.frontmatter.category}
-                        </span>
-                        <span>·</span>
-                        <time>{new Date(post.frontmatter.date).toLocaleDateString('ko-KR')}</time>
+                  <article
+                    key={post.id}
+                    className="card p-6 hover:shadow-lg transition-all duration-300"
+                  >
+                    <div className="flex flex-col md:flex-row gap-6">
+                      {/* 썸네일 */}
+                      <div className="md:w-48 md:flex-shrink-0">
+                        <div className="w-full h-40 md:h-40 rounded-lg overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                          {post.frontmatter.thumbnail ? (
+                            <Image
+                              src={post.frontmatter.thumbnail}
+                              alt={post.frontmatter.title}
+                              width={192}
+                              height={160}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                              }}
+                            />
+                          ) : null}
+                        </div>
                       </div>
 
-                      {/* 더 읽기 - 우측 상단 */}
-                      <Link 
-                        href={`/blog/${post.slug}`}
-                        onClick={() => handlePostClick(post.slug)}
-                        className="absolute top-0 right-0 inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 text-sm"
-                      >
-                        {loadingPostId === post.slug ? (
-                          <>
-                            <LoadingSpinner size="sm" className="mr-1" />
-                            로딩 중...
-                          </>
-                        ) : (
-                          <>
-                            더 읽기
-                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                          </>
-                        )}
-                      </Link>
+                      {/* 콘텐츠 */}
+                      <div className="flex-1 relative">
+                        {/* 메타 정보 */}
+                        <div className="flex items-center space-x-2 text-sm text-neutral-500 mb-2 pr-20">
+                          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                            {post.frontmatter.category}
+                          </span>
+                          <span>·</span>
+                          <time>
+                            {new Date(post.frontmatter.date).toLocaleDateString(
+                              "ko-KR"
+                            )}
+                          </time>
+                        </div>
 
-                      {/* 제목 */}
-                      <h2 className="text-xl font-semibold text-neutral-900 mb-3 hover:text-blue-600 transition-colors duration-200">
-                        <Link 
+                        {/* 더 읽기 - 우측 상단 */}
+                        <Link
                           href={`/blog/${post.slug}`}
                           onClick={() => handlePostClick(post.slug)}
-                          className="flex items-center"
+                          className="absolute top-0 right-0 inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 text-sm"
                         >
                           {loadingPostId === post.slug ? (
                             <>
-                              <LoadingSpinner size="sm" className="mr-2" />
-                              {post.frontmatter.title}
+                              <LoadingSpinner size="sm" className="mr-1" />
+                              로딩 중...
                             </>
                           ) : (
-                            post.frontmatter.title
+                            <>
+                              더 읽기
+                              <svg
+                                className="w-4 h-4 ml-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                />
+                              </svg>
+                            </>
                           )}
                         </Link>
-                      </h2>
 
-                      {/* 요약 */}
-                      <p className="text-neutral-600 line-clamp-3 mb-4">
-                        {post.frontmatter.excerpt}
-                      </p>
+                        {/* 제목 */}
+                        <h2 className="text-xl font-semibold text-neutral-900 mb-3 hover:text-blue-600 transition-colors duration-200">
+                          <Link
+                            href={`/blog/${post.slug}`}
+                            onClick={() => handlePostClick(post.slug)}
+                            className="flex items-center"
+                          >
+                            {loadingPostId === post.slug ? (
+                              <>
+                                <LoadingSpinner size="sm" className="mr-2" />
+                                {post.frontmatter.title}
+                              </>
+                            ) : (
+                              post.frontmatter.title
+                            )}
+                          </Link>
+                        </h2>
 
-                      {/* 태그 */}
-                      {post.frontmatter.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                          {post.frontmatter.tags.slice(0, 3).map((tag) => (
-                            <span 
-                              key={tag}
-                              className="px-2 py-1 bg-neutral-100 text-neutral-600 text-xs rounded-full"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+                        {/* 요약 */}
+                        <p className="text-neutral-600 line-clamp-3 mb-4">
+                          {post.frontmatter.excerpt}
+                        </p>
+
+                        {/* 태그 */}
+                        {post.frontmatter.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1">
+                            {post.frontmatter.tags.slice(0, 3).map((tag) => (
+                              <span
+                                key={tag}
+                                className="px-2 py-1 bg-neutral-100 text-neutral-600 text-xs rounded-full"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </article>
+                  </article>
                 ))
               )}
             </div>
@@ -338,69 +405,114 @@ export default function BlogContent({ posts, categories }: BlogContentProps) {
               <div className="flex justify-center mt-12">
                 <nav className="flex items-center space-x-2">
                   {/* 맨 앞으로 */}
-                  <button 
+                  <button
                     onClick={() => handlePageChange(1)}
                     disabled={currentPage === 1}
                     className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     title="첫 페이지"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
+                      />
                     </svg>
                   </button>
-                  
+
                   {/* 이전 페이지 */}
-                  <button 
+                  <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
                     className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     title="이전 페이지"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
                     </svg>
                   </button>
 
                   {/* 페이지 번호들 */}
-                  {getPageNumbers().map((pageNum, index) => (
-                    pageNum === '...' ? (
-                      <span key={`dots-${index}`} className="px-2 py-2 text-neutral-400">...</span>
+                  {getPageNumbers().map((pageNum, index) =>
+                    pageNum === "..." ? (
+                      <span
+                        key={`dots-${index}`}
+                        className="px-2 py-2 text-neutral-400"
+                      >
+                        ...
+                      </span>
                     ) : (
                       <button
                         key={pageNum}
                         onClick={() => handlePageChange(Number(pageNum))}
                         className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
                           currentPage === pageNum
-                            ? 'bg-blue-600 text-white'
-                            : 'text-neutral-700 hover:bg-neutral-100'
+                            ? "bg-blue-600 text-white"
+                            : "text-neutral-700 hover:bg-neutral-100"
                         }`}
                       >
                         {pageNum}
                       </button>
                     )
-                  ))}
+                  )}
 
                   {/* 다음 페이지 */}
-                  <button 
+                  <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
                     className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     title="다음 페이지"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </button>
 
                   {/* 맨 뒤로 */}
-                  <button 
+                  <button
                     onClick={() => handlePageChange(totalPages)}
                     disabled={currentPage === totalPages}
                     className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     title="마지막 페이지"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 5l7 7-7 7M5 5l7 7-7 7"
+                      />
                     </svg>
                   </button>
                 </nav>
