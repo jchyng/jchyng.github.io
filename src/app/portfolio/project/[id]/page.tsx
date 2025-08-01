@@ -180,7 +180,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           {/* 프로젝트 내용 */}
           <div className="card p-8">
             <div 
-              className="prose prose-neutral max-w-none prose-headings:text-neutral-900 prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-neutral-900 prose-code:text-blue-600 prose-code:bg-blue-50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-neutral-100 prose-blockquote:border-l-blue-500"
+              className="markdown-content prose prose-neutral max-w-none prose-headings:text-neutral-900 prose-h1:text-2xl prose-h1:border-b prose-h1:border-neutral-200 prose-h1:pb-3 prose-h2:text-xl prose-h2:text-neutral-800 prose-h3:text-lg prose-h3:text-neutral-700 prose-p:text-neutral-600 prose-li:text-neutral-600 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-neutral-900 prose-strong:font-semibold prose-code:text-blue-600 prose-code:bg-blue-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-medium prose-pre:bg-neutral-900 prose-pre:text-neutral-100 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-blockquote:border-l-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:pl-4 prose-blockquote:py-3 prose-blockquote:rounded-r-lg prose-ul:space-y-2 prose-ol:space-y-2 prose-li:marker:text-blue-500"
               dangerouslySetInnerHTML={{ __html: contentHtml }}
             />
           </div>
