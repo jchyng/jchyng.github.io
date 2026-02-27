@@ -3,24 +3,24 @@ import Orb from "@/components/ui/orb";
 
 export default function Home() {
   return (
-    <main className="relative w-full h-screen bg-black overflow-hidden flex flex-col items-center justify-center">
-      {/* Orb Background Layer */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
-        <div style={{ width: '100%', height: '600px', position: 'relative' }} className="flex items-center justify-center">
+    <main className="relative min-h-screen w-full bg-black overflow-x-hidden">
+      {/* Orb Background Layer - Fixed to cover the whole viewport */}
+      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center overflow-hidden">
+        <div className="w-full h-full">
           <Orb
             hoverIntensity={2}
             rotateOnHover={true}
             hue={0}
-            forceHoverState={false}
+            forceHoverState={true}
             backgroundColor="#000000"
             size={1.5}
           />
         </div>
       </div>
 
-      {/* Content Layer */}
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center gap-10 px-6 text-center">
-        <div className="space-y-4">
+      {/* Content Layer - Naturally flows over the fixed background */}
+      <div className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center gap-12 px-6 py-20 text-center">
+        <div className="space-y-6">
           <p className="text-indigo-400 text-sm font-medium tracking-widest uppercase">
             개발자 포트폴리오
           </p>

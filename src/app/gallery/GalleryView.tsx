@@ -112,18 +112,18 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
         <div className="flex flex-col items-center gap-6 flex-shrink-0">
           {/* Card wrapper — buttons are absolute relative to this */}
           <div className="relative">
-            {/* LightRays glow behind card */}
-            <div className="absolute -inset-12 z-0 opacity-70">
+            {/* LightRays glow over card */}
+            <div className="absolute -inset-[300px] z-20 opacity-70 pointer-events-none">
               <LightRays
                 raysOrigin="top-center"
                 raysColor="#ffffff"
                 raysSpeed={0.7}
-                lightSpread={1.0}
-                rayLength={1.2}
-                fadeDistance={0.7}
+                lightSpread={1.2}
+                rayLength={1.8}
+                fadeDistance={0.8}
                 saturation={0.6}
                 followMouse={true}
-                mouseInfluence={0.12}
+                mouseInfluence={0.15}
               />
             </div>
 
@@ -132,7 +132,7 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
               <button
                 onClick={goPrev}
                 aria-label="Previous project"
-                className="absolute -left-14 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full flex items-center justify-center text-neutral-700 hover:text-white hover:bg-neutral-800 transition-all"
+                className="absolute -left-14 top-1/2 -translate-y-1/2 z-30 h-11 w-11 rounded-full flex items-center justify-center text-neutral-700 hover:text-white hover:bg-neutral-800 transition-all"
               >
                 <IconArrowNarrowLeft className="h-5 w-5 text-white" />
               </button>
@@ -171,7 +171,7 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
               <button
                 onClick={goNext}
                 aria-label="Next project"
-                className="absolute -right-14 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full flex items-center justify-center text-neutral-700 hover:text-white hover:bg-neutral-800 transition-all"
+                className="absolute -right-14 top-1/2 -translate-y-1/2 z-30 h-11 w-11 rounded-full flex items-center justify-center text-neutral-700 hover:text-white hover:bg-neutral-800 transition-all"
               >
                 <IconArrowNarrowRight className="h-5 w-5 text-white" />
               </button>
@@ -179,7 +179,7 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
           </div>
 
           {/* Paging dots */}
-          <div className="flex gap-2.5 items-center">
+          <div className="flex gap-2.5 items-center relative z-30">
             {projects.map((_, i) => (
               <button
                 key={i}
