@@ -33,12 +33,12 @@ interface ProfileSidebarProps {
 
 export default function ProfileSidebar({ profileData }: ProfileSidebarProps) {
   return (
-    <aside className="hidden lg:block w-80 flex-shrink-0">
-      <div className="sticky top-24 space-y-6">
-        {/* 프로필 카드 */}
-        <div className="card p-6">
-          <div className="text-center mb-6">
-            <div className="w-44 h-44 mx-auto mb-4 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center overflow-hidden">
+    <aside className="hidden lg:block w-72 flex-shrink-0">
+      <div className="sticky top-24 space-y-8">
+        {/* 프로필 정보 */}
+        <div>
+          <div className="mb-6">
+            <div className="w-40 h-40 mx-auto mb-6 bg-gradient-to-br from-neutral-100 to-neutral-200 rounded-full flex items-center justify-center overflow-hidden ring-1 ring-neutral-200 shadow-sm">
               {profileData.image ? (
                 <Image
                   src={profileData.image}
@@ -56,75 +56,62 @@ export default function ProfileSidebar({ profileData }: ProfileSidebarProps) {
                 </svg>
               )}
             </div>
-            <h2 className="text-2xl font-bold text-neutral-900 mb-2">{profileData.name}</h2>
-            <p className="text-neutral-600">{profileData.major}</p>
-            <p className="text-sm text-neutral-500">{profileData.birthDate}</p>
-          </div>
-
-          {/* 경력 */}
-          <div className="mb-6">
-            <h3 className="font-semibold text-neutral-900 mb-3">경력 사항</h3>
-            <div className="space-y-3">
-              {profileData.experience.map((exp, index) => (
-                <div key={index} className="border-l-2 border-blue-200 pl-4">
-                  <div className="font-medium text-neutral-900">{exp.company}</div>
-                  <div className="text-sm text-neutral-600">{exp.position}</div>
-                  <div className="text-xs text-neutral-500">{exp.period}</div>
-                </div>
-              ))}
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-neutral-900 mb-2">{profileData.name}</h2>
+              <p className="text-lg text-neutral-500 font-medium">{profileData.major}</p>
             </div>
           </div>
 
-          {/* 이메일 */}
-          <div className="mb-4">
-            <h3 className="text-sm font-medium text-neutral-600 mb-2">연락처</h3>
+          {/* 이메일 & 링크 */}
+          <div className="flex flex-col items-center gap-3">
             <a 
               href={`mailto:${profileData.email}`}
-              className="flex items-center space-x-2 text-sm text-neutral-600 hover:text-blue-600 transition-colors duration-200"
+              className="flex items-center space-x-2 text-neutral-500 hover:text-blue-600 transition-colors duration-200"
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
               <span>{profileData.email}</span>
             </a>
-          </div>
 
-          {/* 링크 */}
-          <div>
-            <h3 className="text-sm font-medium text-neutral-600 mb-2">링크</h3>
-            <div className="space-y-1">
+            <div className="flex gap-4">
               {profileData.links.map((link: SocialLink, index: number) => (
                 <a 
                   key={index}
                   href={link.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-2 text-sm text-neutral-600 hover:text-blue-600 transition-colors duration-200"
+                  className="text-neutral-400 hover:text-blue-600 transition-colors duration-200"
+                  title={link.name}
                 >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox={link.viewBox || "0 0 24 24"}>
+                  <svg className="w-6 h-6" fill="currentColor" viewBox={link.viewBox || "0 0 24 24"}>
                     <path d={link.svg}/>
                   </svg>
-                  <span>{link.name}</span>
                 </a>
               ))}
             </div>
           </div>
         </div>
 
-        {/* 네비게이션 */}
-        <div className="card p-4">
-          <nav className="space-y-2">
-            <Link href="#projects" className="block py-2 px-3 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
-              프로젝트
-            </Link>
-            <Link href="#achievements" className="block py-2 px-3 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
-              자격증 & 교육
-            </Link>
-            <Link href="#skills" className="block py-2 px-3 text-neutral-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
-              기술 스택
-            </Link>
-          </nav>
+        <div className="w-full h-px bg-neutral-200" />
+
+        {/* 경력 */}
+        <div>
+          <h3 className="text-sm font-bold text-neutral-900 uppercase tracking-wider mb-4">Experience</h3>
+          <div className="space-y-6">
+            {profileData.experience.map((exp, index) => (
+              <div key={index} className="group">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="font-semibold text-neutral-900">{exp.company}</div>
+                  <div className="text-xs text-neutral-400 bg-neutral-100 px-2 py-0.5 rounded-full">{exp.type}</div>
+                </div>
+                <div className="text-sm text-neutral-600 mb-0.5">{exp.position}</div>
+                <div className="text-xs text-neutral-400 font-mono">{exp.period}</div>
+              </div>
+            ))}
+          </div>
         </div>
+
       </div>
     </aside>
   );
