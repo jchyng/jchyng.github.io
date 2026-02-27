@@ -5,6 +5,7 @@
     "major": "컴퓨터공학 전공",
     "email": "jcy0342@gmail.com",
     "image": "/images/portfolio/profile.jpg",
+    "introduction": "사용자 경험을 최우선으로 생각하는 웹 개발자 정찬영입니다. '왜?'라는 질문을 통해 문제의 본질을 파악하고, 기술을 통해 실질적인 해결책을 제시하는 것을 좋아합니다. 최신 웹 기술과 AI 도구를 적극적으로 활용하여 개발 생산성을 높이고, 안정적이고 확장 가능한 시스템을 구축하는 데 관심이 많습니다.",
     "experience": [
       {
         "company": "SPPARTNERS",

@@ -1,0 +1,17 @@
+
+> github-blog@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.4.2 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+
+ ✓ Starting...
+ ✓ Ready in 1384ms
+ ○ Compiling /portfolio ...
+ ✓ Compiled /portfolio in 6.1s
+ ⚠ Unsupported metadata viewport is configured in metadata export in /portfolio. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /portfolio. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ GET /portfolio/ 200 in 7311ms

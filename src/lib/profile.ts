@@ -20,6 +20,7 @@ export interface ProfileData {
   major: string;
   email: string;
   image: string;
+  introduction: string;
   experience: Experience[];
   links: SocialLink[];
 }

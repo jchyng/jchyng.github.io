@@ -67,7 +67,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
       {/* 프로젝트 목록 */}
       <div className="grid gap-8 md:grid-cols-2">
         {filteredProjects.map((project) => (
-          <div key={project.id} className="card overflow-hidden hover:shadow-lg transition-all duration-300 relative">
+          <div key={project.id} className="card overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative">
             {/* 외부 링크 아이콘 - 우측 상단 */}
             {project.link && project.link !== '#' && (
               <a 
@@ -91,7 +91,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                     alt={project.title}
                     width={400}
                     height={250}
-                    className="w-full h-full object-fill"
+                    className="w-full h-full object-cover"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
