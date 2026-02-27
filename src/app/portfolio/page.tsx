@@ -18,7 +18,7 @@ export default function PortfolioPage() {
 
           {/* 메인 콘텐츠 */}
           <main className="flex-1 pt-8">
-            <IntroSection />
+            <IntroSection introduction={profileData.introduction} />
             <ProjectsSection projects={projects} />
             <AchievementsSection achievements={achievements} />
             <SkillsSection techStacks={techStacks} />
