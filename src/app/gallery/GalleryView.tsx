@@ -1,0 +1,202 @@
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { IconArrowNarrowLeft, IconArrowNarrowRight } from "@tabler/icons-react";
+import { cn } from "@/lib/utils";
+import { IconArrowLeft } from "@tabler/icons-react";
+import type { ProjectData } from "@/lib/markdown";
+import LightRays from "@/components/LightRays";
+
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop";
+
+export default function GalleryView({ projects }: { projects: ProjectData[] }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+
+  if (projects.length === 0) {
+    return (
+      <div className="w-full min-h-screen bg-black flex items-center justify-center">
+        <p className="text-neutral-500">No projects yet.</p>
+      </div>
+    );
+  }
+
+  const current = projects[currentIndex];
+  const canGoPrev = currentIndex > 0;
+  const canGoNext = currentIndex < projects.length - 1;
+
+  const goPrev = () => {
+    if (!canGoPrev) return;
+    setDirection(-1);
+    setCurrentIndex((i) => i - 1);
+  };
+
+  const goNext = () => {
+    if (!canGoNext) return;
+    setDirection(1);
+    setCurrentIndex((i) => i + 1);
+  };
+
+  const goTo = (i: number) => {
+    if (i === currentIndex) return;
+    setDirection(i > currentIndex ? 1 : -1);
+    setCurrentIndex(i);
+  };
+
+  const imageVariants = {
+    enter: (dir: number) => ({ x: dir > 0 ? 120 : -120, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (dir: number) => ({ x: dir > 0 ? -120 : 120, opacity: 0 }),
+  };
+
+  return (
+    <div className="w-full min-h-screen bg-black flex items-center">
+      <Link
+        href="/"
+        className="fixed top-6 left-6 z-50 text-neutral-700 hover:text-white hover:bg-neutral-800 h-10 w-10 rounded-full flex items-center justify-center transition-all"
+        aria-label="Back to home"
+      >
+        <IconArrowLeft className="h-5 w-5" />
+      </Link>
+
+      <div className="w-full max-w-6xl mx-auto px-8 md:px-16 py-16 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+
+        {/* Left: page title + animated project info */}
+        <div className="flex-1 flex flex-col min-w-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="flex flex-col gap-4"
+            >
+              <p className="text-neutral-500 text-xs font-bold tracking-widest uppercase">
+                {current.category}
+                {current.affiliation && (
+                  <span className="font-normal text-neutral-600">
+                    {" "}· {current.affiliation}
+                  </span>
+                )}
+              </p>
+
+              <h3 className="text-white text-3xl md:text-4xl font-bold leading-tight">
+                {current.title}
+              </h3>
+
+              {current.period && (
+                <p className="text-neutral-500 text-sm">{current.period}</p>
+              )}
+
+              {current.summary && (
+                <p className="text-neutral-400 text-base leading-relaxed">
+                  {current.summary}
+                </p>
+              )}
+
+              <Link
+                href={`/projects/${current.slug}`}
+                className="mt-4 inline-flex items-center gap-2 text-white text-sm font-medium border border-white/20 rounded-full px-5 py-2.5 w-fit hover:border-white/50 hover:bg-white/5 transition-all"
+              >
+                View Project →
+              </Link>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Right: card + nav buttons (absolute) + dots */}
+        <div className="flex flex-col items-center gap-6 flex-shrink-0">
+          {/* Card wrapper — buttons are absolute relative to this */}
+          <div className="relative">
+            {/* LightRays glow behind card */}
+            <div className="absolute -inset-12 z-0 opacity-70">
+              <LightRays
+                raysOrigin="top-center"
+                raysColor="#ffffff"
+                raysSpeed={0.7}
+                lightSpread={1.0}
+                rayLength={1.2}
+                fadeDistance={0.7}
+                saturation={0.6}
+                followMouse={true}
+                mouseInfluence={0.12}
+              />
+            </div>
+
+            {/* Prev button */}
+            {canGoPrev && (
+              <button
+                onClick={goPrev}
+                aria-label="Previous project"
+                className="absolute -left-14 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full flex items-center justify-center text-neutral-700 hover:text-white hover:bg-neutral-800 transition-all"
+              >
+                <IconArrowNarrowLeft className="h-5 w-5 text-white" />
+              </button>
+            )}
+
+            {/* Image card */}
+            <div className="relative z-10 w-[420px] md:w-[500px] h-[540px] md:h-[640px] rounded-3xl overflow-hidden bg-neutral-900 shadow-2xl">
+              <AnimatePresence custom={direction} mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  custom={direction}
+                  variants={imageVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.28, ease: "easeInOut" }}
+                  className="absolute inset-0"
+                >
+                  <Link
+                    href={`/projects/${current.slug}`}
+                    className="block w-full h-full group"
+                  >
+                    <Image
+                      src={current.thumbnail || FALLBACK_IMAGE}
+                      alt={current.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </Link>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Next button */}
+            {canGoNext && (
+              <button
+                onClick={goNext}
+                aria-label="Next project"
+                className="absolute -right-14 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full flex items-center justify-center text-neutral-700 hover:text-white hover:bg-neutral-800 transition-all"
+              >
+                <IconArrowNarrowRight className="h-5 w-5 text-white" />
+              </button>
+            )}
+          </div>
+
+          {/* Paging dots */}
+          <div className="flex gap-2.5 items-center">
+            {projects.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                aria-label={`Go to project ${i + 1}`}
+                className={cn(
+                  "h-2 rounded-full transition-all duration-300",
+                  i === currentIndex
+                    ? "w-6 bg-white"
+                    : "w-2 bg-neutral-600 hover:bg-neutral-400"
+                )}
+              />
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
