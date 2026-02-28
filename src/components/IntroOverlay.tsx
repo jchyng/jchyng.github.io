@@ -53,7 +53,7 @@ export const IntroOverlay = ({ children }: { children: React.ReactNode }) => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
-                  className="text-5xl md:text-8xl font-bold tracking-tight text-white"
+                  className="text-4xl sm:text-5xl md:text-8xl font-bold tracking-tight text-white"
                 >
                   안녕하세요 <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">정찬영입니다</span>
@@ -64,7 +64,7 @@ export const IntroOverlay = ({ children }: { children: React.ReactNode }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
-                className="max-w-md text-neutral-400 text-lg font-light leading-relaxed"
+                className="max-w-md text-neutral-400 text-base sm:text-lg font-light leading-relaxed"
               >
                 사용자 경험을 고민하며 성장하는 개발자입니다. <br />
                 함께 만들어가는 서비스를 지향합니다.

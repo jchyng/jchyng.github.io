@@ -27,17 +27,17 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
 
       <Link
         href="/gallery"
-        className="fixed top-6 left-6 z-50 text-neutral-700 hover:text-white hover:bg-neutral-800 h-10 w-10 rounded-full flex items-center justify-center transition-all"
+        className="fixed top-6 left-4 sm:left-6 z-50 text-neutral-700 hover:text-white hover:bg-neutral-800 h-10 w-10 rounded-full flex items-center justify-center transition-all"
         aria-label="Back to gallery"
       >
         <IconArrowLeft className="w-5 h-5" />
       </Link>
 
-      <main className="max-w-4xl mx-auto px-6 py-20 relative z-10">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-12 sm:py-20 relative z-10">
 
         {/* Hero Section */}
         <header className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
+          <div className="flex items-center gap-3 sm:gap-4 mb-6">
             <span className="text-sm font-medium px-3 py-1 bg-indigo-500/10 text-indigo-400 rounded-full border border-indigo-500/20">
               {project.category}
             </span>
@@ -47,11 +47,11 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
               </span>
             )}
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-balance">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-6 text-balance">
             {project.title}
           </h1>
           {project.summary && (
-            <p className="text-xl text-neutral-400 leading-relaxed max-w-2xl">
+            <p className="text-base sm:text-xl text-neutral-400 leading-relaxed max-w-2xl">
               {project.summary}
             </p>
           )}
@@ -59,7 +59,7 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
 
         {/* Thumbnail Image */}
         {project.thumbnail && (
-          <div className="w-full aspect-[21/9] relative rounded-3xl overflow-hidden mb-16 ring-1 ring-white/10">
+          <div className="w-full aspect-video sm:aspect-[21/9] relative rounded-3xl overflow-hidden mb-10 sm:mb-16 ring-1 ring-white/10">
             <Image
               src={project.thumbnail}
               alt={project.title}
