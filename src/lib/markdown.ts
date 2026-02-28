@@ -41,8 +41,10 @@ export function getAllProjects(): ProjectData[] {
         period: data.period || '',
         affiliation: data.affiliation || '',
         content,
-      } as ProjectData;
-    });
+        draft: data.draft === true,
+      } as ProjectData & { draft: boolean };
+    })
+    .filter((project) => !(project as ProjectData & { draft: boolean }).draft);
 
   // Sort by date descending
   return allProjects.sort((a, b) => {
