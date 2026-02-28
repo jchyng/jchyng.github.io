@@ -31,11 +31,14 @@ export function getAllProjects(): ProjectData[] {
       const fileContents = fs.readFileSync(fullPath, 'utf8');
       const { data, content } = matter(fileContents);
       
+      const thumb = data.thumbnail || '';
+      const validThumb = (thumb.startsWith('/') || thumb.startsWith('http')) ? thumb : '';
+
       return {
         slug,
         title: data.title || slug,
         category: data.category || 'Uncategorized',
-        thumbnail: data.thumbnail || '',
+        thumbnail: validThumb,
         summary: data.summary || '',
         date: data.date || '',
         period: data.period || '',
@@ -62,11 +65,14 @@ export function getProjectBySlug(slug: string): ProjectData | null {
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
 
+    const thumb = data.thumbnail || '';
+    const validThumb = (thumb.startsWith('/') || thumb.startsWith('http')) ? thumb : '';
+
     return {
       slug,
       title: data.title || slug,
       category: data.category || 'Uncategorized',
-      thumbnail: data.thumbnail || '',
+      thumbnail: validThumb,
       summary: data.summary || '',
       date: data.date || '',
       period: data.period || '',

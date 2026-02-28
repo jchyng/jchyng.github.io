@@ -6,7 +6,6 @@ summary: "Azure PaaS 환경에서 Selenium 크롤러를 운영하기 위해 Dock
 date: "2023-06-23"
 period: "2023.06 (3일 해커톤)"
 affiliation: "2023 해커그라운드 — Microsoft × 경북대학교 공동 주최"
-draft: true
 ---
 
 <!-- TODO: 대표 썸네일 이미지 추가 (예: /images/youth-policy-alarm-main.png) -->

@@ -6,7 +6,6 @@ summary: "MSA 기반의 게임 백엔드 시스템 구축 프로젝트. Spring S
 date: "2023-06-30"
 period: "2023.03 - 2023.06 (4개월)"
 affiliation: "경북대학교 캡스톤 디자인 (팀 프로젝트 5인)"
-draft: true
 ---
 
 <!-- TODO: 대표 썸네일 이미지 추가 (예: /images/octopus-dream-main.png) -->
