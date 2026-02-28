@@ -51,6 +51,17 @@ jchyng.github.io/
 
 ## 프로젝트 추가 방법
 
+### 0. 템플릿 복사
+
+`content/project-template.md`를 복사해서 새 파일을 만드는 것을 권장합니다:
+
+```bash
+cp content/project-template.md content/my-new-project.md
+```
+
+템플릿에는 모든 frontmatter 필드와 본문 구성(개요, 기술 스택, 주요 기능, 구현 내용, 회고)이 미리 작성되어 있습니다.
+`draft: true` 필드가 있는 파일은 갤러리에 노출되지 않으므로, 작성을 완료한 뒤 해당 줄을 삭제하면 자동으로 게시됩니다.
+
 ### 1. 마크다운 파일 생성
 
 `content/` 폴더에 영문 kebab-case 파일명으로 생성합니다:
@@ -91,6 +102,7 @@ affiliation: "개인 프로젝트"
 | `thumbnail` | 선택 | 썸네일 이미지 경로 또는 외부 URL |
 | `period` | 선택 | 작업 기간 (예: `2025.12 - 2026.01`) |
 | `affiliation` | 선택 | 소속/유형 (예: `개인 프로젝트`, `팀 프로젝트`) |
+| `draft` | 선택 | `true`로 설정하면 갤러리에서 숨김 (작성 중인 파일에 활용) |
 
 ### 4. 이미지 관리
 
