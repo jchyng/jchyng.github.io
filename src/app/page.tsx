@@ -24,7 +24,7 @@ export default function Home() {
           <p className="text-indigo-400 text-sm font-medium tracking-widest uppercase">
             개발자 포트폴리오
           </p>
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tight text-white">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tight text-white">
             안녕하세요,
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">
@@ -33,7 +33,7 @@ export default function Home() {
           </h1>
         </div>
 
-        <p className="max-w-md text-neutral-400 text-lg font-light leading-relaxed">
+        <p className="max-w-md text-neutral-400 text-base sm:text-lg font-light leading-relaxed">
           사용자 경험을 고민하며 성장하는 개발자입니다.
           <br />
           함께 만들어가는 서비스를 지향합니다.
