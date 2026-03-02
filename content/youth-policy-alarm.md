@@ -6,7 +6,6 @@ summary: "Azure PaaS 환경에서 Selenium 크롤러를 운영하기 위해 Dock
 date: "2023-06-23"
 period: "2023.06 (3일 해커톤)"
 affiliation: "2023 해커그라운드 — Microsoft × 경북대학교 공동 주최"
-draft: true
 ---
 
 <!-- TODO: 대표 썸네일 이미지 추가 (예: /images/youth-policy-alarm-main.png) -->
@@ -21,25 +20,25 @@ draft: true
 
 ## 개요
 
-| 항목 | 내용 |
-|------|------|
-| **역할** | 백엔드 개발 (크롤링 기능, Azure 배포, Firebase FCM 연동 주도) |
-| **팀 구성** | 4인 (프론트엔드 2명 + 백엔드 2명) |
-| **기간** | 2023.06 (3일 해커톤) |
-| **성과** | 본선 진출 |
-| **주최** | Microsoft & 경북대학교 — 2023 해커그라운드 |
+| 항목        | 내용                                                          |
+| ----------- | ------------------------------------------------------------- |
+| **역할**    | 백엔드 개발 (크롤링 기능, Azure 배포, Firebase FCM 연동 주도) |
+| **팀 구성** | 4인 (프론트엔드 2명 + 백엔드 2명)                             |
+| **기간**    | 2023.06 (3일 해커톤)                                          |
+| **성과**    | 본선 진출                                                     |
+| **주최**    | Microsoft & 경북대학교 — 2023 해커그라운드                    |
 
 ---
 
 ## 기술 스택
 
-| 분류 | 기술 |
-|------|------|
-| 언어/프레임워크 | Java 11, Spring Boot 2.7 |
-| 데이터베이스 | MS-SQL |
-| 크롤링 | Selenium |
-| 알림 | Firebase FCM (Push Notification) |
-| 클라우드/배포 | Azure App Service (PaaS), Docker |
+| 분류            | 기술                             |
+| --------------- | -------------------------------- |
+| 언어/프레임워크 | Java 11, Spring Boot 2.7         |
+| 데이터베이스    | MS-SQL                           |
+| 크롤링          | Selenium                         |
+| 알림            | Firebase FCM (Push Notification) |
+| 클라우드/배포   | Azure App Service (PaaS), Docker |
 
 ---
 
