@@ -7,7 +7,6 @@ import { IconArrowNarrowLeft, IconArrowNarrowRight } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { IconArrowLeft } from "@tabler/icons-react";
 import type { ProjectData } from "@/lib/markdown";
-import LightRays from "@/components/LightRays";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop";
@@ -112,22 +111,7 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
         <div className="flex flex-col items-center gap-6 flex-shrink-0">
           {/* Card wrapper — buttons are absolute relative to this */}
           <div className="relative">
-            {/* LightRays glow over card */}
-            <div className="absolute -inset-[300px] z-20 opacity-70 pointer-events-none">
-              <LightRays
-                raysOrigin="top-center"
-                raysColor="#ffffff"
-                raysSpeed={0.7}
-                lightSpread={1.2}
-                rayLength={1.8}
-                fadeDistance={0.8}
-                saturation={0.6}
-                followMouse={true}
-                mouseInfluence={0.15}
-              />
-            </div>
-
-            {/* Prev button */}
+{/* Prev button */}
             {canGoPrev && (
               <button
                 onClick={goPrev}

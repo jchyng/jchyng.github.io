@@ -10,6 +10,7 @@ interface OrbProps {
   forceHoverState?: boolean;
   backgroundColor?: string;
   size?: number;
+  noiseScale?: number;
   className?: string;
 }
 
@@ -20,6 +21,7 @@ export default function Orb({
   forceHoverState = false,
   backgroundColor = "#000000",
   size = 1.0,
+  noiseScale = 0.65,
   className = "",
 }: OrbProps) {
   const ctnDom = useRef<HTMLDivElement>(null);
@@ -44,6 +46,7 @@ export default function Orb({
     uniform float rot;
     uniform float hoverIntensity;
     uniform float size;
+    uniform float noiseScale;
     uniform vec3 backgroundColor;
     varying vec2 vUv;
 
@@ -118,7 +121,6 @@ export default function Orb({
     const vec3 baseColor2 = vec3(0.298039, 0.760784, 0.913725);
     const vec3 baseColor3 = vec3(0.062745, 0.078431, 0.600000);
     const float innerRadius = 0.6;
-    const float noiseScale = 0.65;
 
     float light1(float intensity, float attenuation, float dist) {
       return intensity / (1.0 + dist * attenuation);
@@ -231,6 +233,7 @@ export default function Orb({
         rot: { value: 0 },
         hoverIntensity: { value: hoverIntensity },
         size: { value: size },
+        noiseScale: { value: noiseScale },
         backgroundColor: { value: hexToVec3(backgroundColor) },
       },
     });
@@ -289,6 +292,7 @@ export default function Orb({
       program.uniforms.hue.value = hue;
       program.uniforms.hoverIntensity.value = hoverIntensity;
       program.uniforms.size.value = size;
+      program.uniforms.noiseScale.value = noiseScale;
 
       const effectiveHover = forceHoverState ? 1 : targetHover;
       program.uniforms.hover.value +=
@@ -312,7 +316,7 @@ export default function Orb({
       if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, [hue, hoverIntensity, rotateOnHover, forceHoverState, backgroundColor, size]);
+  }, [hue, hoverIntensity, rotateOnHover, forceHoverState, backgroundColor, size, noiseScale]);
 
   return <div ref={ctnDom} className={`relative w-full h-full ${className}`} />;
 }

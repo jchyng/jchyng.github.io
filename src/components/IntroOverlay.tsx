@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PrismBackground } from "@/components/ui/prism-background";
+import Orb from "@/components/ui/orb";
 import Cookies from "js-cookie";
 import { IconArrowRight } from "@tabler/icons-react";
 
@@ -37,7 +37,16 @@ export const IntroOverlay = ({ children }: { children: React.ReactNode }) => {
             exit={{ opacity: 0, y: -20, transition: { duration: 0.8, ease: "easeInOut" } }}
             className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black overflow-hidden"
           >
-            <PrismBackground />
+            <div className="absolute inset-0 pointer-events-none">
+              <Orb
+                hoverIntensity={0}
+                rotateOnHover={false}
+                hue={0}
+                forceHoverState={false}
+                backgroundColor="#000000"
+                noiseScale={0}
+              />
+            </div>
             
             <div className="relative z-10 flex flex-col items-center gap-12 px-6 text-center">
               <div className="space-y-4">

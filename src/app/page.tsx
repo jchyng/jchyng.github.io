@@ -11,9 +11,9 @@ export default function Home() {
             hoverIntensity={2}
             rotateOnHover={true}
             hue={0}
-            forceHoverState={true}
+            forceHoverState={false}
             backgroundColor="#000000"
-            size={1.5}
+            noiseScale={0}
           />
         </div>
       </div>
