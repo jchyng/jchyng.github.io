@@ -68,7 +68,7 @@ export const Carousel = ({ cards }: CarouselProps) => {
   if (cards.length === 0) {
     return (
       <div className="flex items-center justify-center h-96 text-neutral-500">
-        No projects yet.
+        등록된 프로젝트가 없습니다.
       </div>
     );
   }
@@ -224,7 +224,7 @@ export const Card = ({ card }: { card: CardData }) => {
         {card.href && (
           <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <span className="text-white text-xs font-medium bg-black/50 backdrop-blur-sm border border-white/20 rounded-full px-3 py-1.5">
-              View Project →
+              프로젝트 보기 →
             </span>
           </div>
         )}

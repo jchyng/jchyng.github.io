@@ -27,8 +27,8 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
 
       <Link
         href="/gallery"
-        className="fixed top-6 left-6 z-50 text-neutral-700 hover:text-white hover:bg-neutral-800 h-10 w-10 rounded-full flex items-center justify-center transition-all"
-        aria-label="Back to gallery"
+        className="fixed top-6 left-6 z-50 text-neutral-400 hover:text-white bg-neutral-800/60 hover:bg-neutral-800 backdrop-blur-sm h-10 w-10 rounded-full flex items-center justify-center transition-all border border-neutral-700/50"
+        aria-label="갤러리로 돌아가기"
       >
         <IconArrowLeft className="w-5 h-5" />
       </Link>
@@ -54,6 +54,18 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
             <p className="text-base sm:text-xl text-neutral-400 leading-relaxed max-w-2xl">
               {project.summary}
             </p>
+          )}
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4 sm:mt-6">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs font-medium px-2.5 py-1 bg-neutral-800 text-neutral-300 rounded-md border border-neutral-700/50"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           )}
         </header>
 

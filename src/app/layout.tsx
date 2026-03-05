@@ -12,8 +12,16 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Premium Gallery Portfolio",
-  description: "A showcase of premium works.",
+  title: "정찬영 | 백엔드 개발자 포트폴리오",
+  description:
+    "사용자 경험을 고민하며 성장하는 백엔드 개발자 정찬영의 프로젝트 포트폴리오입니다.",
+  openGraph: {
+    title: "정찬영 | 백엔드 개발자 포트폴리오",
+    description:
+      "사용자 경험을 고민하며 성장하는 백엔드 개발자 정찬영의 프로젝트 포트폴리오입니다.",
+    type: "website",
+    locale: "ko_KR",
+  },
 };
 
 export default function RootLayout({
@@ -22,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark bg-black">
+    <html lang="ko" className="dark bg-black">
       <body className={`${inter.className} bg-black text-white antialiased`}>
         {children}
       </body>

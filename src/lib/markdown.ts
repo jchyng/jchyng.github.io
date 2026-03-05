@@ -13,6 +13,7 @@ export type ProjectData = {
   date: string;
   period?: string;
   affiliation?: string;
+  tags?: string[];
   content: string;
 };
 
@@ -40,6 +41,7 @@ export function getAllProjects(): ProjectData[] {
         date: data.date || '',
         period: data.period || '',
         affiliation: data.affiliation || '',
+        tags: data.tags || [],
         content,
         draft: data.draft === true,
       } as ProjectData & { draft: boolean };
@@ -71,6 +73,7 @@ export function getProjectBySlug(slug: string): ProjectData | null {
       date: data.date || '',
       period: data.period || '',
       affiliation: data.affiliation || '',
+      tags: data.tags || [],
       content,
     } as ProjectData;
   } catch {

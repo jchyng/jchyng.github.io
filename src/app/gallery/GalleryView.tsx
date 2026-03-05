@@ -18,7 +18,7 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
   if (projects.length === 0) {
     return (
       <div className="w-full min-h-screen bg-black flex items-center justify-center">
-        <p className="text-neutral-500">No projects yet.</p>
+        <p className="text-neutral-500">등록된 프로젝트가 없습니다.</p>
       </div>
     );
   }
@@ -55,8 +55,8 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
     <div className="w-full min-h-screen bg-black flex items-center">
       <Link
         href="/"
-        className="fixed top-6 left-6 z-50 text-neutral-700 hover:text-white hover:bg-neutral-800 h-10 w-10 rounded-full flex items-center justify-center transition-all"
-        aria-label="Back to home"
+        className="fixed top-6 left-6 z-50 text-neutral-400 hover:text-white bg-neutral-800/60 hover:bg-neutral-800 backdrop-blur-sm h-10 w-10 rounded-full flex items-center justify-center transition-all border border-neutral-700/50"
+        aria-label="홈으로 돌아가기"
       >
         <IconArrowLeft className="h-5 w-5" />
       </Link>
@@ -101,7 +101,7 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
                 href={`/projects/${current.slug}`}
                 className="mt-4 inline-flex items-center gap-2 text-white text-sm font-medium border border-white/20 rounded-full px-5 py-2.5 w-fit hover:border-white/50 hover:bg-white/5 transition-all"
               >
-                View Project →
+                프로젝트 보기 →
               </Link>
             </motion.div>
           </AnimatePresence>
