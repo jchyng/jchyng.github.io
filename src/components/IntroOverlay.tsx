@@ -48,13 +48,13 @@ export const IntroOverlay = ({ children }: { children: React.ReactNode }) => {
               />
             </div>
             
-            <div className="relative z-10 flex flex-col items-center gap-12 px-6 text-center">
+            <div className="relative z-10 flex flex-col items-center gap-8 sm:gap-12 px-5 sm:px-6 text-center">
               <div className="space-y-4">
                 <motion.span
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="text-indigo-400 text-sm font-medium tracking-widest uppercase"
+                  className="text-indigo-400 text-xs sm:text-sm font-medium tracking-widest uppercase"
                 >
                   개발자 포트폴리오
                 </motion.span>
@@ -62,7 +62,7 @@ export const IntroOverlay = ({ children }: { children: React.ReactNode }) => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
-                  className="text-5xl md:text-8xl font-bold tracking-tight text-white"
+                  className="text-4xl sm:text-5xl md:text-8xl font-bold tracking-tight text-white"
                 >
                   안녕하세요 <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">정찬영입니다</span>
@@ -73,7 +73,7 @@ export const IntroOverlay = ({ children }: { children: React.ReactNode }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
-                className="max-w-md text-neutral-400 text-lg font-light leading-relaxed"
+                className="max-w-md text-neutral-400 text-base sm:text-lg font-light leading-relaxed"
               >
                 사용자 경험을 고민하며 성장하는 개발자입니다. <br />
                 함께 만들어가는 서비스를 지향합니다.
@@ -86,7 +86,7 @@ export const IntroOverlay = ({ children }: { children: React.ReactNode }) => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleStart}
-                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-semibold transition-all hover:bg-neutral-100 overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]"
+                className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-white text-black rounded-full text-sm sm:text-base font-semibold transition-all hover:bg-neutral-100 overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]"
               >
                 <span>포트폴리오 보기</span>
                 <IconArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -95,8 +95,8 @@ export const IntroOverlay = ({ children }: { children: React.ReactNode }) => {
 
             {/* Subtle floating circles */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-[100px] animate-pulse" />
-              <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-[100px] animate-pulse delay-700" />
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-96 sm:h-96 bg-indigo-500/5 rounded-full blur-[100px] animate-pulse" />
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-96 sm:h-96 bg-purple-500/5 rounded-full blur-[100px] animate-pulse delay-700" />
             </div>
           </motion.div>
         )}

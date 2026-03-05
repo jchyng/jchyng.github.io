@@ -19,12 +19,12 @@ export default function Home() {
       </div>
 
       {/* Content Layer - Naturally flows over the fixed background */}
-      <div className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center gap-12 px-6 py-20 text-center">
-        <div className="space-y-6">
-          <p className="text-indigo-400 text-sm font-medium tracking-widest uppercase">
+      <div className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center gap-8 sm:gap-12 px-5 sm:px-6 py-12 sm:py-20 text-center">
+        <div className="space-y-4 sm:space-y-6">
+          <p className="text-indigo-400 text-xs sm:text-sm font-medium tracking-widest uppercase">
             개발자 포트폴리오
           </p>
-          <h1 className="text-6xl md:text-8xl font-bold tracking-tight text-white">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight text-white">
             안녕하세요,
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">
@@ -33,7 +33,7 @@ export default function Home() {
           </h1>
         </div>
 
-        <p className="max-w-md text-neutral-400 text-lg font-light leading-relaxed">
+        <p className="max-w-md text-neutral-400 text-base sm:text-lg font-light leading-relaxed">
           사용자 경험을 고민하며 성장하는 개발자입니다.
           <br />
           함께 만들어가는 서비스를 지향합니다.
@@ -41,7 +41,7 @@ export default function Home() {
 
         <Link
           href="/gallery"
-          className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-semibold transition-all hover:bg-neutral-100 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]"
+          className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-white text-black rounded-full text-sm sm:text-base font-semibold transition-all hover:bg-neutral-100 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]"
         >
           <span>포트폴리오 보기</span>
           <svg

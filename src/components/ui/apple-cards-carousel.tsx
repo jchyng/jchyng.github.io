@@ -74,11 +74,11 @@ export const Carousel = ({ cards }: CarouselProps) => {
   }
 
   return (
-    <div className="flex flex-col items-center gap-8 px-4">
+    <div className="flex flex-col items-center gap-6 sm:gap-8 px-2 sm:px-4">
       {/* Card row with nav buttons */}
-      <div className="flex items-center justify-center w-full gap-4">
+      <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
         {/* Left nav — always takes space to keep card centered */}
-        <div className="flex-shrink-0 w-12 flex justify-center">
+        <div className="hidden sm:flex flex-shrink-0 w-12 justify-center">
           {canGoPrev && (
             <button
               onClick={goPrev}
@@ -108,7 +108,7 @@ export const Carousel = ({ cards }: CarouselProps) => {
         </div>
 
         {/* Right nav */}
-        <div className="flex-shrink-0 w-12 flex justify-center">
+        <div className="hidden sm:flex flex-shrink-0 w-12 justify-center">
           {canGoNext && (
             <button
               onClick={goNext}
@@ -119,6 +119,26 @@ export const Carousel = ({ cards }: CarouselProps) => {
             </button>
           )}
         </div>
+      </div>
+
+      {/* Mobile navigation buttons */}
+      <div className="flex sm:hidden justify-center gap-4">
+        <button
+          onClick={goPrev}
+          disabled={!canGoPrev}
+          aria-label="Previous project"
+          className="h-11 w-11 rounded-full bg-neutral-800/80 backdrop-blur-sm border border-neutral-700/50 flex items-center justify-center disabled:opacity-30 transition-all"
+        >
+          <IconArrowNarrowLeft className="h-5 w-5 text-white" />
+        </button>
+        <button
+          onClick={goNext}
+          disabled={!canGoNext}
+          aria-label="Next project"
+          className="h-11 w-11 rounded-full bg-neutral-800/80 backdrop-blur-sm border border-neutral-700/50 flex items-center justify-center disabled:opacity-30 transition-all"
+        >
+          <IconArrowNarrowRight className="h-5 w-5 text-white" />
+        </button>
       </div>
 
       {/* Paging dots */}
@@ -167,7 +187,7 @@ export const Card = ({ card }: { card: CardData }) => {
       className="w-full rounded-3xl overflow-hidden flex flex-col bg-neutral-900 shadow-2xl cursor-pointer group"
     >
       {/* Top info section */}
-      <div className="flex flex-col gap-3 p-7 md:p-8">
+      <div className="flex flex-col gap-2 sm:gap-3 p-4 sm:p-7 md:p-8">
         <div className="flex items-center justify-between gap-4">
           <span className="text-neutral-400 text-xs font-semibold tracking-widest uppercase">
             {card.category}
@@ -179,26 +199,26 @@ export const Card = ({ card }: { card: CardData }) => {
           )}
         </div>
 
-        <h3 className="text-white text-2xl md:text-3xl font-bold leading-tight">
+        <h3 className="text-white text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
           {card.title}
         </h3>
 
         {card.period && (
-          <p className="text-neutral-500 text-sm font-medium">{card.period}</p>
+          <p className="text-neutral-500 text-xs sm:text-sm font-medium">{card.period}</p>
         )}
 
         {card.summary && (
-          <p className="text-neutral-400 text-sm md:text-base leading-relaxed line-clamp-3">
+          <p className="text-neutral-400 text-sm md:text-base leading-relaxed line-clamp-2 sm:line-clamp-3">
             {card.summary}
           </p>
         )}
       </div>
 
       {/* Divider */}
-      <div className="h-px bg-neutral-800 mx-6" />
+      <div className="h-px bg-neutral-800 mx-4 sm:mx-6" />
 
       {/* Thumbnail section */}
-      <div className="relative h-72 md:h-96">
+      <div className="relative h-48 sm:h-72 md:h-96">
         <BlurImage src={card.src} alt={card.title} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         {card.href && (
