@@ -246,6 +246,10 @@ export default function Orb({
       const width = container.clientWidth;
       const height = container.clientHeight;
       renderer.setSize(width * dpr, height * dpr);
+      // OGL's setSize() overrides canvas CSS with pixel values (e.g. 1170px on 3x DPR mobile),
+      // which pushes the orb off-screen. Reset to 100% so the canvas fills its container.
+      gl.canvas.style.width = "100%";
+      gl.canvas.style.height = "100%";
       program.uniforms.iResolution.value.set(
         gl.canvas.width,
         gl.canvas.height,
