@@ -108,9 +108,9 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
         </div>
 
         {/* Right: card + nav buttons (absolute) + dots */}
-        <div className="flex flex-col items-center gap-6 flex-shrink-0">
+        <div className="w-full lg:w-[420px] flex-shrink-0 flex flex-col items-center gap-6">
           {/* Card wrapper with nav buttons */}
-          <div className="relative w-full max-w-[500px]">
+          <div className="relative w-full max-w-[340px] lg:max-w-none">
             {/* Navigation buttons - below card on mobile, beside card on sm+ */}
             {canGoPrev && (
               <button
@@ -123,7 +123,7 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
             )}
 
             {/* Image card */}
-            <div className="relative z-10 w-full aspect-[3/4] sm:aspect-[5/6] rounded-2xl sm:rounded-3xl overflow-hidden bg-neutral-900 shadow-2xl">
+            <div className="relative z-10 w-full aspect-[4/3] lg:aspect-[5/6] rounded-2xl lg:rounded-3xl overflow-hidden bg-neutral-900 shadow-2xl">
               <AnimatePresence custom={direction} mode="wait">
                 <motion.div
                   key={currentIndex}
