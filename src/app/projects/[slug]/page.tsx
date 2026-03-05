@@ -27,39 +27,51 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
 
       <Link
         href="/gallery"
-        className="fixed top-6 left-6 z-50 text-neutral-700 hover:text-white hover:bg-neutral-800 h-10 w-10 rounded-full flex items-center justify-center transition-all"
-        aria-label="Back to gallery"
+        className="fixed top-6 left-6 z-50 text-neutral-400 hover:text-white bg-neutral-800/60 hover:bg-neutral-800 backdrop-blur-sm h-10 w-10 rounded-full flex items-center justify-center transition-all border border-neutral-700/50"
+        aria-label="갤러리로 돌아가기"
       >
         <IconArrowLeft className="w-5 h-5" />
       </Link>
 
-      <main className="max-w-4xl mx-auto px-6 py-20 relative z-10">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20 relative z-10">
 
         {/* Hero Section */}
-        <header className="mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-sm font-medium px-3 py-1 bg-indigo-500/10 text-indigo-400 rounded-full border border-indigo-500/20">
+        <header className="mb-8 sm:mb-16">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <span className="text-xs sm:text-sm font-medium px-3 py-1 bg-indigo-500/10 text-indigo-400 rounded-full border border-indigo-500/20">
               {project.category}
             </span>
             {project.date && (
-              <span className="text-sm text-neutral-500">
+              <span className="text-xs sm:text-sm text-neutral-500">
                 {project.date}
               </span>
             )}
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-balance">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-4 sm:mb-6 text-balance">
             {project.title}
           </h1>
           {project.summary && (
-            <p className="text-xl text-neutral-400 leading-relaxed max-w-2xl">
+            <p className="text-base sm:text-xl text-neutral-400 leading-relaxed max-w-2xl">
               {project.summary}
             </p>
+          )}
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4 sm:mt-6">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs font-medium px-2.5 py-1 bg-neutral-800 text-neutral-300 rounded-md border border-neutral-700/50"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           )}
         </header>
 
         {/* Thumbnail Image */}
         {project.thumbnail && (
-          <div className="w-full aspect-[21/9] relative rounded-3xl overflow-hidden mb-16 ring-1 ring-white/10">
+          <div className="w-full aspect-[16/9] sm:aspect-[21/9] relative rounded-2xl sm:rounded-3xl overflow-hidden mb-8 sm:mb-16 ring-1 ring-white/10">
             <Image
               src={project.thumbnail}
               alt={project.title}
@@ -71,7 +83,7 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
         )}
 
         {/* Markdown Content */}
-        <article className="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-img:rounded-2xl prose-img:border prose-img:border-neutral-800">
+        <article className="prose prose-invert prose-base sm:prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-img:rounded-xl sm:prose-img:rounded-2xl prose-img:border prose-img:border-neutral-800">
           <ReactMarkdown>
             {project.content}
           </ReactMarkdown>

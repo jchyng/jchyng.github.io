@@ -6,6 +6,7 @@ summary: "뮤지컬 팬을 위한 커뮤니티 플랫폼 백엔드 개발. 7만 
 date: "2023-07-25"
 period: "2023.03 - 2023.07 (5개월)"
 affiliation: "멀티캠퍼스 Java 백엔드 부트캠프 최종 프로젝트 (팀 프로젝트 5인)"
+tags: ["Spring Boot", "Selenium", "JProfiler", "MySQL", "AWS"]
 ---
 
 <!-- TODO: 대표 썸네일 이미지 추가 (예: /images/weiver-main.png) -->
