@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Prism from "prismjs";
@@ -28,7 +28,8 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         remarkPlugins={[remarkGfm]}
         components={{
           // 코드 블록 스타일링 최적화
-          code({ node, inline, className, children, ...props }: any) {
+          code({ className, children, ...props }: React.HTMLAttributes<HTMLElement> & { inline?: boolean }) {
+            const inline = props.inline;
             const match = /language-(\w+)/.exec(className || "");
             return !inline && match ? (
               <pre className={className} style={{ borderRadius: '0.75rem', padding: '1.25rem' }}>

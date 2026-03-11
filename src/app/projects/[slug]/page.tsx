@@ -72,11 +72,13 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
         {/* Main Project Image (Full View) */}
         {project.thumbnail && (
           <div className="w-full relative rounded-2xl sm:rounded-3xl overflow-hidden mb-8 sm:mb-16 ring-1 ring-white/10 bg-neutral-900/50">
-            <img
+            <Image
               src={project.thumbnail}
               alt={project.title}
+              width={1200}
+              height={675}
               className="w-full h-auto block"
-              loading="eager"
+              priority
             />
           </div>
         )}
