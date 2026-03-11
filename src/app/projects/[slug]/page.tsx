@@ -1,9 +1,9 @@
 import { getAllProjects, getProjectBySlug } from "@/lib/markdown";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 export async function generateStaticParams() {
   const projects = getAllProjects();
@@ -69,24 +69,21 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
           )}
         </header>
 
-        {/* Thumbnail Image */}
+        {/* Main Project Image (Full View) */}
         {project.thumbnail && (
-          <div className="w-full aspect-[16/9] sm:aspect-[21/9] relative rounded-2xl sm:rounded-3xl overflow-hidden mb-8 sm:mb-16 ring-1 ring-white/10">
-            <Image
+          <div className="w-full relative rounded-2xl sm:rounded-3xl overflow-hidden mb-8 sm:mb-16 ring-1 ring-white/10 bg-neutral-900/50">
+            <img
               src={project.thumbnail}
               alt={project.title}
-              fill
-              className="object-cover"
-              priority
+              className="w-full h-auto block"
+              loading="eager"
             />
           </div>
         )}
 
         {/* Markdown Content */}
         <article className="prose prose-invert prose-base sm:prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-img:rounded-xl sm:prose-img:rounded-2xl prose-img:border prose-img:border-neutral-800">
-          <ReactMarkdown>
-            {project.content}
-          </ReactMarkdown>
+          <MarkdownRenderer content={project.content} />
         </article>
       </main>
     </div>
