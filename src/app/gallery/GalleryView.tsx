@@ -17,7 +17,7 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
 
   if (projects.length === 0) {
     return (
-      <div className="w-full min-h-screen bg-black flex items-center justify-center">
+      <div className="w-full min-h-screen flex items-center justify-center">
         <p className="text-neutral-500">등록된 프로젝트가 없습니다.</p>
       </div>
     );
@@ -52,7 +52,7 @@ export default function GalleryView({ projects }: { projects: ProjectData[] }) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-black flex items-center">
+    <div className="w-full min-h-screen flex items-center">
       <Link
         href="/"
         className="fixed top-6 left-6 z-50 text-neutral-400 hover:text-white bg-neutral-800/60 hover:bg-neutral-800 backdrop-blur-sm h-10 w-10 rounded-full flex items-center justify-center transition-all border border-neutral-700/50"

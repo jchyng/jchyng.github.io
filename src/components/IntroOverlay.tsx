@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import LightRays from "@/components/LightRays";
 import Cookies from "js-cookie";
 import { IconArrowRight } from "@tabler/icons-react";
 
@@ -37,21 +36,6 @@ export const IntroOverlay = ({ children }: { children: React.ReactNode }) => {
             exit={{ opacity: 0, y: -20, transition: { duration: 0.8, ease: "easeInOut" } }}
             className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black overflow-hidden"
           >
-            <div className="absolute inset-0 pointer-events-none opacity-50">
-              <LightRays
-                raysOrigin="top-center"
-                raysColor="#ffffff"
-                raysSpeed={1.0}
-                lightSpread={1.2}
-                rayLength={2.0}
-                pulsating={true}
-                fadeDistance={1.0}
-                saturation={1.0}
-                followMouse={true}
-                mouseInfluence={0.08}
-              />
-            </div>
-            
             <div className="relative z-10 flex flex-col items-center gap-8 sm:gap-12 px-5 sm:px-6 text-center">
               <div className="space-y-4">
                 <motion.span

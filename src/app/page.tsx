@@ -1,28 +1,23 @@
 import Link from "next/link";
-import LightRays from "@/components/LightRays";
+import DarkVeil from "@/components/DarkVeil";
 
 export default function Home() {
   return (
     <main className="relative min-h-screen w-full bg-black overflow-x-hidden">
-      {/* LightRays Background Layer - Fixed to cover the whole viewport */}
-      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center overflow-hidden">
-        <div className="w-full h-full opacity-60">
-          <LightRays
-            raysOrigin="top-center"
-            raysColor="#ffffff"
-            raysSpeed={1.0}
-            lightSpread={1.2}
-            rayLength={2.0}
-            pulsating={true}
-            fadeDistance={1.0}
-            saturation={1.0}
-            followMouse={true}
-            mouseInfluence={0.08}
-          />
-        </div>
+      {/* DarkVeil Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <DarkVeil
+          hueShift={0}
+          noiseIntensity={0.05}
+          scanlineIntensity={0.05}
+          speed={0.5}
+          scanlineFrequency={800}
+          warpAmount={1}
+          resolutionScale={1}
+        />
       </div>
 
-      {/* Content Layer - Naturally flows over the fixed background */}
+      {/* Content Layer */}
       <div className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center gap-8 sm:gap-12 px-5 sm:px-6 py-12 sm:py-20 text-center">
         <div className="space-y-4 sm:space-y-6">
           <p className="text-indigo-400 text-xs sm:text-sm font-medium tracking-widest uppercase">
