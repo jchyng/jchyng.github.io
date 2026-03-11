@@ -1,19 +1,23 @@
 import Link from "next/link";
-import Orb from "@/components/ui/orb";
+import LightRays from "@/components/LightRays";
 
 export default function Home() {
   return (
     <main className="relative min-h-screen w-full bg-black overflow-x-hidden">
-      {/* Orb Background Layer - Fixed to cover the whole viewport */}
+      {/* LightRays Background Layer - Fixed to cover the whole viewport */}
       <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center overflow-hidden">
-        <div className="w-full h-full">
-          <Orb
-            hoverIntensity={2}
-            rotateOnHover={true}
-            hue={0}
-            forceHoverState={false}
-            backgroundColor="#000000"
-            noiseScale={0}
+        <div className="w-full h-full opacity-60">
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#ffffff"
+            raysSpeed={1.0}
+            lightSpread={1.2}
+            rayLength={2.0}
+            pulsating={true}
+            fadeDistance={1.0}
+            saturation={1.0}
+            followMouse={true}
+            mouseInfluence={0.08}
           />
         </div>
       </div>
