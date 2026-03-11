@@ -2,25 +2,28 @@
 title: "Weiver: 7만 건의 대용량 데이터를 처리하는 초고속 뮤지컬 플랫폼"
 category: "Backend Development"
 thumbnail: "/images/weiver/musical-detail.png"
-summary: "비동기 병렬 처리와 Batch Insert를 도입하여 데이터 수집 성능을 92% 개선(2시간 -> 10분)하고, JProfiler로 JVM 리소스를 최적화한 프로젝트입니다."
-date: "2026-03-11"
-period: "2026.01 - 2026.03"
-affiliation: "Personal Project"
+summary: "비동기 병렬 처리와 Hibernate Batch Insert를 도입하여 데이터 수집 성능을 92% 개선(2시간 -> 10분)하고, JProfiler로 JVM 리소스를 최적화한 5인 팀 프로젝트입니다."
+date: "2023-07-01"
+period: "2023.06 - 2023.07"
+affiliation: "Team Project (5인)"
 tags:
   [
     "Java",
     "Spring Boot",
     "Multi-threading",
-    "Batch Insert",
+    "Hibernate Batch Insert",
     "JProfiler",
     "Oracle DB",
+    "AWS",
   ]
 draft: false
 ---
 
 # Weiver (Musical Community)
 
-뮤지컬 팬들을 위한 정보 통합 플랫폼 **Weiver**는 방대한 공연 데이터를 효율적으로 수집하고 관리하는 백엔드 성능 최적화에 역량을 집중한 프로젝트입니다. 특히 7만 건 이상의 데이터를 실시간에 가깝게 동기화하기 위한 아키텍처 설계를 주도했습니다.
+뮤지컬 팬들을 위한 정보 통합 플랫폼 **Weiver**는 5인 팀이 함께 개발한 프로젝트입니다. 팀은 **프론트엔드 2인 / 백엔드 3인**으로 분업하였으며, 저는 백엔드 파트에서 **데이터 수집(크롤링), 뮤지컬·배우 데이터 CRUD 페이지, AWS 배포**를 담당했습니다. 방대한 공연 데이터를 효율적으로 수집하고 관리하는 백엔드 성능 최적화에 역량을 집중하였으며, 특히 7만 건 이상의 데이터를 실시간에 가깝게 동기화하기 위한 아키텍처 설계를 주도했습니다.
+
+> **데이터 출처:** 공연예술 공공 API인 **KOPIS**를 검토하였으나, 출연 배우·캐스팅 등 서비스에 필요한 상세 정보가 포함되어 있지 않아 **PlayDB**를 데이터 소스로 채택했습니다. PlayDB의 `robots.txt`는 크롤링을 허용하고 있습니다.
 
 ## 🚀 핵심 성과: 대용량 데이터 처리 및 성능 최적화
 
@@ -28,7 +31,7 @@ draft: false
 
 - **성능 개선:** 기존 동기식(Sequential) 로직 기준 **약 2시간(120분)** 소요되던 전수 조사 시간을 **10분대**로 단축 (**약 92% 성능 향상**).
 - **비동기 병렬 처리(Multi-threading):** `CompletableFuture`와 전용 `ExecutorService`를 활용하여 수만 개의 상세 페이지 요청을 병렬화.
-- **Batch Insert 도입:** 1,000건 단위의 청크(Chunk) 처리를 통해 DB 커넥션 비용과 트랜잭션 오버헤드를 최소화.
+- **Hibernate Batch Insert 도입:** `hibernate.jdbc.batch_size=1000` 설정을 통해 `saveAll()` 호출 시 1,000건을 단일 DB 왕복으로 묶어 전송, 커넥션 비용과 트랜잭션 오버헤드를 최소화.
 - **JVM 리소스 최적화:** **JProfiler**를 사용하여 힙 덤프(Heap Dump)를 분석, 크롤링 과정에서의 메모리 누수 지점을 포착하고 객체 생존 주기를 개선하여 안정성 확보.
 
 ---
@@ -44,8 +47,8 @@ draft: false
 
 단일 스레드 기반의 기존 로직은 하나의 상세 페이지를 크롤링하는 동안 다음 페이지의 요청을 보내지 못하는 **Blocking** 현상이 발생했습니다. 이를 해결하기 위해 다음과 같은 전략을 사용했습니다.
 
-- **Thread Allocation:** 하드웨어 자원(CPU Core)과 네트워크 대역폭을 고려하여 20개의 스레드를 독립적으로 할당한 `FixedThreadPool`을 구성했습니다.
-- **CompletableFuture Pipeline:** 각 요청을 비동기로 시작하고, 모든 작업이 완료될 때까지 Non-blocking 방식으로 대기한 후 결과를 집계(`join`)하는 파이프라인을 구축했습니다.
+- **Thread Allocation:** 네트워크 I/O는 연산 시간보다 대기 시간이 압도적으로 길기 때문에 CPU Core 수보다 많은 스레드를 허용할 수 있습니다. 스레드 수를 10 → 20 → 30 → 50개로 단계별로 벤치마크한 결과, **20개 구간에서 처리 시간이 수렴**하고 그 이상에서는 컨텍스트 스위칭 비용만 증가함을 확인하여 `FixedThreadPool(20)`으로 결정했습니다.
+- **CompletableFuture Pipeline:** 각 요청을 비동기로 시작하고, `CompletableFuture.allOf()`로 모든 작업을 동시에 대기한 후 결과를 집계하는 파이프라인을 구축했습니다. stream에서 순차적으로 `join()`을 호출하면 첫 번째 Future의 지연이 이후 처리를 block하므로, `allOf` 방식으로 전체 완료를 한 번에 기다립니다.
 - **Chunk-based Processing:** 메모리 압박을 방지하기 위해 1,000건 단위로 데이터를 나누어 처리(Partitioning)하여 시스템 안정성을 확보했습니다.
 
 ```java
@@ -58,7 +61,7 @@ public class CrawlingService {
     private final ActorRepository actorRepository;
     private final CastingRepository castingRepository;
 
-    // [핵심] 네트워크 I/O 부하를 고려하여 20개의 스레드를 고정 할당 (Thread Allocation)
+    // [핵심] I/O Bound 작업 특성상 스레드 수 10~50개 벤치마크 결과 20개에서 처리량 수렴
     private final ExecutorService executor = Executors.newFixedThreadPool(20);
 
     public void task() {
@@ -78,7 +81,7 @@ public class CrawlingService {
      * CompletableFuture를 활용한 상세 정보 비동기 병렬 수집
      */
     private void processInParallel(List<String> musicalIds) {
-        // 1,000건 단위로 청크를 나누어 메모리 압박을 줄이고 Batch Insert 효율 증대
+        // 1,000건 단위로 청크를 나누어 메모리 압박을 줄이고 벌크 INSERT 효율 증대
         Lists.partition(musicalIds, 1000).forEach(chunk -> {
             List<CompletableFuture<MusicalActorDto>> futures = chunk.stream()
                 .map(id -> CompletableFuture.supplyAsync(() -> {
@@ -91,19 +94,24 @@ public class CrawlingService {
                 }, executor))
                 .collect(Collectors.toList());
 
-            // 모든 비동기 작업이 완료될 때까지 Non-blocking 대기 후 결과 취합
-            List<MusicalActorDto> results = futures.stream()
-                .map(CompletableFuture::join)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+            // allOf()로 모든 Future를 동시에 대기 - 순차 join() 시 앞 작업 지연이 전체를 block하는 문제 방지
+            List<MusicalActorDto> results = CompletableFuture
+                .allOf(futures.toArray(new CompletableFuture[0]))
+                .thenApply(v -> futures.stream()
+                    .map(CompletableFuture::join)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()))
+                .join();
 
-            // 수집된 대량의 데이터를 Batch 방식으로 DB에 반영
+            // 수집된 대량의 데이터를 벌크 INSERT로 DB에 반영
             saveAllBatch(results);
         });
     }
 
     /**
-     * JPA Batch Insert를 통한 쓰기 성능 최적화
+     * Hibernate Batch Insert를 통한 쓰기 성능 최적화
+     * hibernate.jdbc.batch_size=1000 설정으로 saveAll() 호출 시
+     * 단건 INSERT를 1,000건 단위로 묶어 단일 DB 왕복으로 전송 (Network Round-trip 감소)
      */
     @Transactional
     public void saveAllBatch(List<MusicalActorDto> dtos) {
@@ -115,7 +123,7 @@ public class CrawlingService {
             dto.getActorsByRoleDtoList().forEach(r -> actors.addAll(r.getActor()));
         }
 
-        // Hibernate Batch 설정을 통해 단일 쿼리로 묶어 전송 (Network Round-trip 감소)
+        // hibernate.jdbc.batch_size 설정에 의해 1,000건이 하나의 배치로 묶여 전송됨
         musicalRepository.saveAll(musicals);
         actorRepository.saveAll(actors);
     }
@@ -130,6 +138,17 @@ public class CrawlingService {
 - **문제 탐색:** JProfiler의 힙 덤프 분석 결과, `Jsoup Document` 객체가 비동기 스레드 내에서 즉시 해제되지 않아 `Old Generation` 영역으로 넘어가며 `Full GC`를 유발함을 발견했습니다.
 - **해결 방안:** 상세 정보 추출 후 `Document` 참조를 명시적으로 `null` 처리하고, 로컬 변수의 스코프를 최소화하여 객체의 생존 주기를 단축시켰습니다.
 - **결과:** 메모리 점유율을 **약 60% 절감**하고, 서비스 중단 없이 대규모 크롤링을 수행할 수 있는 안정성을 확보했습니다.
+
+---
+
+## ☁️ AWS 인프라 구성 및 배포
+
+팀 내 AWS 배포를 전담하여 서비스 운영 환경을 구축했습니다.
+
+- **EC2 (t2.micro):** Spring Boot 애플리케이션 서버 호스팅. JAR 파일을 직접 배포하여 운영
+- **RDS (Oracle):** DB 서버를 로컬에서 클라우드로 분리하여 팀원 간 데이터 공유 환경 일원화
+- **S3:** 프로필 이미지 등 정적 파일 업로드 및 CDN 연동
+- **보안 그룹 설정:** EC2와 RDS 간 프라이빗 통신 구성, 외부 노출 포트 최소화
 
 ---
 

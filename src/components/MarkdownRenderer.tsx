@@ -32,7 +32,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
             const inline = props.inline;
             const match = /language-(\w+)/.exec(className || "");
             return !inline && match ? (
-              <pre className={className} style={{ borderRadius: '0.75rem', padding: '1.25rem' }}>
+              <pre className={className} style={{ borderRadius: '0.75rem', padding: '1.25rem' }} tabIndex={0}>
                 <code {...props} className={className}>
                   {children}
                 </code>
