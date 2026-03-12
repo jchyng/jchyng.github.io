@@ -7,6 +7,7 @@ date: "2025-03-07"
 period: "2024.08 - 2025.03 (7개월)"
 affiliation: "㈜위니텍 (실무 프로젝트)"
 tags: ["Meilisearch", "Spring Boot", "eGov", "PostgreSQL", "Linux", "tcpdump"]
+type: team
 ---
 
 # 경기도 소방재난본부 홈페이지 & 백오피스 리뉴얼

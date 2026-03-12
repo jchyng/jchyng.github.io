@@ -7,6 +7,7 @@ date: "2023-06-30"
 period: "2023.03 - 2023.06 (4개월)"
 affiliation: "경북대학교 캡스톤 디자인 (팀 프로젝트 5인)"
 tags: ["Spring Boot", "MSA", "Spring Cloud Gateway", "JWT", "Kakao OAuth", "PortOne", "AWS", "GitHub Actions", "JMeter", "REST Docs"]
+type: team
 ---
 
 # 문어의 꿈 — 자기관리 기반 캐릭터 육성 게임

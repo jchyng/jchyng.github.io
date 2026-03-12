@@ -7,6 +7,7 @@ date: "2026-02-28"
 period: "2026.01 - 2026.02"
 affiliation: "Personal Project"
 tags: ["Next.js", "TypeScript", "Tailwind CSS"]
+type: team
 draft: true
 ---
 

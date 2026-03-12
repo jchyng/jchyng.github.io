@@ -7,6 +7,7 @@ date: "2023-06-23"
 period: "2023.06 (3일 해커톤)"
 affiliation: "2023 해커그라운드 — Microsoft × 경북대학교 공동 주최"
 tags: ["Azure", "Docker", "Selenium", "Firebase FCM", "Spring Boot", "Azure SQL"]
+type: team
 ---
 
 # 청년 정책 알림이

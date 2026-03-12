@@ -17,6 +17,7 @@ tags:
     "AWS",
   ]
 draft: false
+type: team
 ---
 
 # Weiver (Musical Community)

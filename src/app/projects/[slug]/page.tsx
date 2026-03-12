@@ -20,6 +20,11 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
     notFound();
   }
 
+  const allProjects = getAllProjects();
+  const currentIndex = allProjects.findIndex((p) => p.slug === params.slug);
+  const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
+  const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
+
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-50 relative selection:bg-indigo-500/30">
       {/* Background elements */}
@@ -87,6 +92,44 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
         <article className="prose prose-invert prose-base sm:prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-img:rounded-xl sm:prose-img:rounded-2xl prose-img:border prose-img:border-neutral-800">
           <MarkdownRenderer content={project.content} />
         </article>
+
+        {/* Prev / Next Navigation */}
+        {(prevProject || nextProject) && (
+          <nav className="mt-16 pt-8 border-t border-neutral-800">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                {prevProject && (
+                  <Link
+                    href={`/projects/${prevProject.slug}`}
+                    className="group flex flex-col gap-1"
+                  >
+                    <span className="text-xs text-neutral-600 group-hover:text-neutral-400 transition-colors">
+                      ← 이전 프로젝트
+                    </span>
+                    <span className="text-sm sm:text-base font-medium text-neutral-300 group-hover:text-white transition-colors line-clamp-2">
+                      {prevProject.title}
+                    </span>
+                  </Link>
+                )}
+              </div>
+              <div className="flex-1 text-right">
+                {nextProject && (
+                  <Link
+                    href={`/projects/${nextProject.slug}`}
+                    className="group flex flex-col gap-1 items-end"
+                  >
+                    <span className="text-xs text-neutral-600 group-hover:text-neutral-400 transition-colors">
+                      다음 프로젝트 →
+                    </span>
+                    <span className="text-sm sm:text-base font-medium text-neutral-300 group-hover:text-white transition-colors line-clamp-2">
+                      {nextProject.title}
+                    </span>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </nav>
+        )}
       </main>
     </div>
   );
