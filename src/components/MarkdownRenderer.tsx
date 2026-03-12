@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import Prism from "prismjs";
 
 // Prism 테마 및 언어 임포트
@@ -24,8 +25,9 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
   return (
     <div className="markdown-content">
-      <ReactMarkdown 
+      <ReactMarkdown
         remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
         components={{
           // 코드 블록 스타일링 최적화
           code({ className, children, ...props }: React.HTMLAttributes<HTMLElement> & { inline?: boolean }) {

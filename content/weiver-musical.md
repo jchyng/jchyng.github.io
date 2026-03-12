@@ -34,6 +34,9 @@ draft: false
 - **Hibernate Batch Insert 도입:** `hibernate.jdbc.batch_size=1000` 설정을 통해 `saveAll()` 호출 시 1,000건을 단일 DB 왕복으로 묶어 전송, 커넥션 비용과 트랜잭션 오버헤드를 최소화.
 - **JVM 리소스 최적화:** **JProfiler**를 사용하여 힙 덤프(Heap Dump)를 분석, 크롤링 과정에서의 메모리 누수 지점을 포착하고 객체 생존 주기를 개선하여 안정성 확보.
 
+![Project Award](/images/weiver/award.png)
+*기술적 도전과 성능 최적화 성과를 인정받아 프로젝트 최우수상을 수상하였습니다.*
+
 ---
 
 ## 🛠️ Deep Dive: 병렬 처리 엔진 설계 및 구현
